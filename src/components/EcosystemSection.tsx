@@ -172,16 +172,6 @@ const PillarCard = ({ pillar, index }: { pillar: Pillar; index: number }) => {
               ))}
             </div>
           )}
-                  key={logo.alt}
-                  className="h-7 w-auto bg-foreground/90 rounded-md px-2 py-1 flex items-center"
-                  whileHover={{ scale: 1.1 }}
-                  transition={{ type: "spring", stiffness: 300 }}
-                >
-                  <img src={logo.src} alt={logo.alt} className="h-full w-auto object-contain" loading="lazy" />
-                </motion.div>
-              ))}
-            </div>
-          )}
         </div>
       </motion.div>
     </motion.div>

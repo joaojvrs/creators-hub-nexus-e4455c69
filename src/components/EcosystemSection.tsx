@@ -2,6 +2,8 @@ import { motion, useScroll, useTransform, useMotionValue, useSpring } from "fram
 import { Camera, ShoppingBag, Globe, Users, ArrowUpRight } from "lucide-react";
 import { useRef, useState } from "react";
 import TextReveal from "./TextReveal";
+import tiktokShopLogo from "@/assets/tiktok-shop-logo.png";
+import instagramShopLogo from "@/assets/instagram-shop-logo.png";
 
 const pillars = [
   {

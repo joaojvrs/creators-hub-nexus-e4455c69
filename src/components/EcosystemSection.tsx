@@ -36,7 +36,7 @@ const pillars = [
 
 const lineVariants = {
   hidden: { scaleX: 0 },
-  visible: { scaleX: 1, transition: { duration: 0.8, ease: [0.215, 0.61, 0.355, 1] } },
+  visible: { scaleX: 1, transition: { duration: 0.8, ease: [0.215, 0.61, 0.355, 1] as const } },
 };
 
 const EcosystemSection = () => {

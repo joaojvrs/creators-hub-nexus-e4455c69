@@ -1,85 +1,90 @@
 import { motion } from "framer-motion";
-import heroBg from "@/assets/hero-bg.jpg";
+import studioImg from "@/assets/studio-onair.png";
 
 const HeroSection = () => {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Background */}
+    <section className="relative min-h-screen flex items-end overflow-hidden pb-16 md:pb-24">
+      {/* Full-bleed background image */}
       <div className="absolute inset-0">
         <img
-          src={heroBg}
-          alt=""
-          className="w-full h-full object-cover opacity-40"
+          src={studioImg}
+          alt="Creators Hub Club Studio"
+          className="w-full h-full object-cover"
           width={1920}
           height={1080}
         />
-        <div className="absolute inset-0 bg-radial-green" />
-        <div className="absolute inset-0 bg-background/60" />
+        {/* Heavy gradient overlay from bottom */}
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-background/20" />
+        <div className="absolute inset-0 bg-gradient-to-r from-background/60 to-transparent" />
       </div>
 
-      <div className="relative z-10 container mx-auto px-6 text-center">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-        >
-          <p className="text-primary font-heading text-sm md:text-base tracking-[0.3em] uppercase mb-6">
-            Crea · Influye · Vende
-          </p>
-        </motion.div>
+      {/* Top fade for nav */}
+      <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-background/80 to-transparent z-10" />
 
-        <motion.h1
-          className="font-heading text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight"
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.15, ease: "easeOut" }}
-        >
-          <span className="text-foreground">CREATORS</span>{" "}
-          <span className="text-gradient">HUB</span>{" "}
-          <span className="text-foreground">CLUB</span>
-        </motion.h1>
-
-        <motion.p
-          className="text-muted-foreground text-lg md:text-xl max-w-2xl mx-auto mb-10 font-body"
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
-        >
-          El ecosistema donde el contenido se convierte en ventas y comunidad.
-          Estudio, marketplace y comunidad de creadores en Barcelona.
-        </motion.p>
-
-        <motion.div
-          className="flex flex-col sm:flex-row gap-4 justify-center"
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.45, ease: "easeOut" }}
-        >
-          <a
-            href="#contacto"
-            className="inline-flex items-center justify-center px-8 py-4 bg-primary text-primary-foreground font-heading font-semibold rounded-lg glow-green-strong hover:brightness-110 transition-all duration-300"
+      <div className="relative z-10 container mx-auto px-6">
+        <div className="max-w-3xl">
+          <motion.p
+            className="text-primary font-heading text-xs md:text-sm tracking-[0.4em] uppercase mb-4 font-medium"
+            initial={{ opacity: 0, x: -30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.7, ease: "easeOut" }}
           >
-            Agendar Visita
-          </a>
-          <a
-            href="#asistente"
-            className="inline-flex items-center justify-center px-8 py-4 border border-glow text-primary font-heading font-semibold rounded-lg hover:bg-primary/10 transition-all duration-300"
-          >
-            Hablar con IA
-          </a>
-        </motion.div>
-      </div>
+            Barcelona — Calle Provençals 65
+          </motion.p>
 
-      {/* Scroll indicator */}
-      <motion.div
-        className="absolute bottom-8 left-1/2 -translate-x-1/2"
-        animate={{ y: [0, 10, 0] }}
-        transition={{ duration: 2, repeat: Infinity }}
-      >
-        <div className="w-6 h-10 border-2 border-muted-foreground/30 rounded-full flex items-start justify-center p-2">
-          <div className="w-1.5 h-1.5 bg-primary rounded-full" />
+          <motion.h1
+            className="font-heading text-5xl md:text-7xl lg:text-8xl font-bold leading-[0.9] mb-6"
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.9, delay: 0.1, ease: "easeOut" }}
+          >
+            <span className="block text-foreground">CREATORS</span>
+            <span className="block text-gradient">HUB</span>
+            <span className="block text-foreground">CLUB</span>
+          </motion.h1>
+
+          <motion.div
+            className="flex items-center gap-4 mb-8"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+          >
+            <div className="h-px w-16 bg-primary/60" />
+            <p className="text-muted-foreground text-base md:text-lg font-body max-w-md">
+              El ecosistema donde el contenido se convierte en ventas y comunidad.
+              Estudio, marketplace y club de creadores.
+            </p>
+          </motion.div>
+
+          <motion.div
+            className="flex flex-wrap gap-3"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.6 }}
+          >
+            <a
+              href="#contacto"
+              className="inline-flex items-center justify-center px-7 py-3.5 bg-primary text-primary-foreground font-heading font-semibold text-sm rounded-full glow-green-strong hover:brightness-110 transition-all duration-300"
+            >
+              Agendar Visita
+            </a>
+            <a
+              href="#asistente"
+              className="inline-flex items-center justify-center px-7 py-3.5 border border-glow text-primary font-heading font-semibold text-sm rounded-full hover:bg-primary/10 transition-all duration-300"
+            >
+              Hablar con IA
+            </a>
+          </motion.div>
         </div>
-      </motion.div>
+      </div>
+
+      {/* Side accent line */}
+      <motion.div
+        className="absolute right-8 top-1/4 bottom-1/4 w-px bg-gradient-to-b from-transparent via-primary/30 to-transparent hidden lg:block"
+        initial={{ scaleY: 0 }}
+        animate={{ scaleY: 1 }}
+        transition={{ duration: 1.2, delay: 0.8 }}
+      />
     </section>
   );
 };

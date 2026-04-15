@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
+import MagneticButton from "./MagneticButton";
 
 const links = [
   { label: "Espacio", href: "#espacio" },
@@ -26,42 +27,58 @@ const Navbar = () => {
           ? "bg-background/80 backdrop-blur-xl border-b border-border/50"
           : "bg-transparent"
       }`}
-      initial={{ y: -80 }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.6, ease: "easeOut" }}
+      initial={{ y: -80, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.8, ease: [0.215, 0.61, 0.355, 1] }}
     >
       <div className="container mx-auto px-6 flex items-center justify-between h-16">
-        <a href="#" className="font-heading font-bold text-sm tracking-wider">
+        <MagneticButton href="#" strength={0.2} className="font-heading font-bold text-sm tracking-wider">
           CREATORS <span className="text-gradient">HUB</span>
-        </a>
+        </MagneticButton>
 
         {/* Desktop links */}
         <div className="hidden md:flex items-center gap-8">
-          {links.map((link) => (
-            <a
+          {links.map((link, i) => (
+            <motion.div
               key={link.href}
-              href={link.href}
-              className="text-muted-foreground text-xs tracking-widest uppercase font-heading hover:text-primary transition-colors"
+              initial={{ opacity: 0, y: -15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 + i * 0.08 }}
             >
-              {link.label}
-            </a>
+              <MagneticButton
+                href={link.href}
+                strength={0.25}
+                className="text-muted-foreground text-xs tracking-widest uppercase font-heading hover:text-primary transition-colors"
+              >
+                {link.label}
+              </MagneticButton>
+            </motion.div>
           ))}
         </div>
 
-        <a
-          href="#contacto"
-          className="hidden md:inline-flex items-center px-5 py-2 bg-primary text-primary-foreground font-heading font-semibold text-xs rounded-full hover:brightness-110 transition-all"
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.6 }}
         >
-          Reservar
-        </a>
+          <MagneticButton
+            href="#contacto"
+            strength={0.3}
+            className="hidden md:inline-flex items-center px-5 py-2 bg-primary text-primary-foreground font-heading font-semibold text-xs rounded-full hover:brightness-110 transition-all hover:shadow-[0_0_30px_hsl(160_72%_50%/0.3)]"
+          >
+            Reservar
+          </MagneticButton>
+        </motion.div>
 
         {/* Mobile toggle */}
-        <button
+        <motion.button
           onClick={() => setMenuOpen(!menuOpen)}
           className="md:hidden text-foreground"
+          whileTap={{ scale: 0.9, rotate: 90 }}
+          transition={{ type: "spring", stiffness: 400 }}
         >
           {menuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-        </button>
+        </motion.button>
       </div>
 
       {/* Mobile menu */}
@@ -72,26 +89,32 @@ const Navbar = () => {
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.3 }}
+            transition={{ duration: 0.4, ease: [0.215, 0.61, 0.355, 1] }}
           >
             <div className="container mx-auto px-6 py-6 flex flex-col gap-4">
-              {links.map((link) => (
-                <a
+              {links.map((link, i) => (
+                <motion.a
                   key={link.href}
                   href={link.href}
                   onClick={() => setMenuOpen(false)}
                   className="text-foreground font-heading text-sm py-2 border-b border-border/30"
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: i * 0.08 }}
                 >
                   {link.label}
-                </a>
+                </motion.a>
               ))}
-              <a
+              <motion.a
                 href="#contacto"
                 onClick={() => setMenuOpen(false)}
                 className="inline-flex items-center justify-center px-5 py-3 bg-primary text-primary-foreground font-heading font-semibold text-sm rounded-full mt-2"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
               >
                 Reservar Visita
-              </a>
+              </motion.a>
             </div>
           </motion.div>
         )}

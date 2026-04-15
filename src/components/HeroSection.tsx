@@ -33,21 +33,16 @@ const HeroSection = () => {
       <div className="absolute inset-0 bg-gradient-to-r from-background/60 to-transparent" />
       <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-background/80 to-transparent z-10" />
 
-      {/* Animated grain texture overlay */}
-      <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{
-        backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
-      }} />
-
       <motion.div className="relative z-10 container mx-auto px-6" style={{ y: contentY }}>
         <div className="max-w-3xl">
           <motion.p
-            className="text-primary font-heading text-xs md:text-sm tracking-[0.4em] uppercase mb-4 font-medium"
+            className="text-primary font-heading text-xs md:text-sm tracking-[0.4em] uppercase mb-6 font-medium flex items-center gap-3"
             initial={{ opacity: 0, x: -40 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, ease: [0.215, 0.61, 0.355, 1] }}
+            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           >
             <motion.span
-              className="inline-block w-8 h-px bg-primary mr-3 align-middle"
+              className="inline-block w-8 h-px bg-primary"
               initial={{ scaleX: 0 }}
               animate={{ scaleX: 1 }}
               transition={{ duration: 0.6, delay: 0.3 }}
@@ -56,22 +51,29 @@ const HeroSection = () => {
             Barcelona — Calle Provençals 65
           </motion.p>
 
-          <div className="mb-6">
-            <div className="overflow-hidden">
-              <TextReveal className="font-heading text-5xl md:text-7xl lg:text-8xl font-bold leading-[0.9] block text-foreground" as="span" delay={0.1}>
-                CREATORS
-              </TextReveal>
-            </div>
-            <div className="overflow-hidden">
-              <TextReveal className="font-heading text-5xl md:text-7xl lg:text-8xl font-bold leading-[0.9] block text-gradient" as="span" delay={0.25}>
-                HUB
-              </TextReveal>
-            </div>
-            <div className="overflow-hidden">
-              <TextReveal className="font-heading text-5xl md:text-7xl lg:text-8xl font-bold leading-[0.9] block text-foreground" as="span" delay={0.4}>
-                CLUB
-              </TextReveal>
-            </div>
+          {/* Title with text reveal */}
+          <div className="mb-8">
+            <TextReveal
+              className="font-heading text-5xl md:text-7xl lg:text-8xl font-bold leading-[1] block text-foreground"
+              as="span"
+              delay={0.1}
+            >
+              CREATORS
+            </TextReveal>
+            <TextReveal
+              className="font-heading text-5xl md:text-7xl lg:text-8xl font-bold leading-[1] block text-gradient"
+              as="span"
+              delay={0.2}
+            >
+              HUB
+            </TextReveal>
+            <TextReveal
+              className="font-heading text-5xl md:text-7xl lg:text-8xl font-bold leading-[1] block text-foreground"
+              as="span"
+              delay={0.3}
+            >
+              CLUB
+            </TextReveal>
           </div>
 
           <motion.div
@@ -101,7 +103,7 @@ const HeroSection = () => {
             <MagneticButton
               href="#contacto"
               strength={0.4}
-              className="inline-flex items-center justify-center px-7 py-3.5 bg-primary text-primary-foreground font-heading font-semibold text-sm rounded-full glow-green-strong hover:brightness-110 transition-all duration-300 hover:shadow-[0_0_50px_hsl(160_72%_50%/0.4)]"
+              className="inline-flex items-center justify-center px-7 py-3.5 bg-primary text-primary-foreground font-heading font-semibold text-sm rounded-full glow-green-strong hover:brightness-110 transition-all duration-300"
             >
               Agendar Visita
             </MagneticButton>
@@ -121,7 +123,7 @@ const HeroSection = () => {
         className="absolute right-8 top-1/4 bottom-1/4 w-px bg-gradient-to-b from-transparent via-primary/30 to-transparent hidden lg:block"
         initial={{ scaleY: 0 }}
         animate={{ scaleY: 1 }}
-        transition={{ duration: 1.5, delay: 1.2, ease: [0.215, 0.61, 0.355, 1] }}
+        transition={{ duration: 1.5, delay: 1.2 }}
       />
 
       {/* Scroll indicator */}

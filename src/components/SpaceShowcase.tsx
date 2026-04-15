@@ -2,6 +2,9 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import spaceOverview from "@/assets/space-overview.png";
 import studioOnair from "@/assets/studio-onair.png";
+import spaceFront from "@/assets/space-front.jpg";
+import spaceCowork from "@/assets/space-cowork.jpg";
+import spaceEntrance from "@/assets/space-entrance.jpg";
 import TextReveal from "./TextReveal";
 
 const SpaceShowcase = () => {
@@ -13,10 +16,9 @@ const SpaceShowcase = () => {
 
   const y1 = useTransform(scrollYProgress, [0, 1], [80, -80]);
   const y2 = useTransform(scrollYProgress, [0, 1], [120, -50]);
+  const y3 = useTransform(scrollYProgress, [0, 1], [60, -60]);
   const scale1 = useTransform(scrollYProgress, [0, 0.5], [0.92, 1]);
   const scale2 = useTransform(scrollYProgress, [0.1, 0.6], [0.88, 1]);
-  const rotate1 = useTransform(scrollYProgress, [0, 1], [2, -1]);
-  const rotate2 = useTransform(scrollYProgress, [0, 1], [-2, 1]);
 
   return (
     <section ref={sectionRef} className="py-12 md:py-24 overflow-hidden">
@@ -57,12 +59,12 @@ const SpaceShowcase = () => {
           </motion.p>
         </div>
 
-        {/* Asymmetric image grid with parallax + cinematic scale/rotation */}
-        <div className="grid grid-cols-12 gap-4 md:gap-6">
-          {/* Large image */}
+        {/* Main asymmetric grid */}
+        <div className="grid grid-cols-12 gap-4 md:gap-6 mb-6">
+          {/* Large image - overview */}
           <motion.div
             className="col-span-12 md:col-span-7 relative rounded-2xl overflow-hidden aspect-[4/3] md:aspect-[16/10]"
-            style={{ y: y1, scale: scale1, rotate: rotate1 }}
+            style={{ y: y1, scale: scale1 }}
             initial={{ opacity: 0, x: -60 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
@@ -93,7 +95,7 @@ const SpaceShowcase = () => {
           <div className="col-span-12 md:col-span-5 flex flex-col gap-4 md:gap-6">
             <motion.div
               className="relative rounded-2xl overflow-hidden aspect-[4/3]"
-              style={{ y: y2, scale: scale2, rotate: rotate2 }}
+              style={{ y: y2, scale: scale2 }}
               initial={{ opacity: 0, x: 60 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
@@ -126,10 +128,9 @@ const SpaceShowcase = () => {
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.7, delay: 0.3, ease: [0.215, 0.61, 0.355, 1] }}
+              transition={{ duration: 0.7, delay: 0.3 }}
               whileHover={{ borderColor: "hsl(160 72% 50% / 0.3)" }}
             >
-              {/* Animated background glow on hover */}
               <div className="absolute inset-0 bg-radial-green opacity-0 group-hover:opacity-50 transition-opacity duration-700" />
               <div className="relative z-10">
                 <div className="flex items-center gap-3 mb-3">
@@ -149,6 +150,39 @@ const SpaceShowcase = () => {
               </div>
             </motion.div>
           </div>
+        </div>
+
+        {/* Second row — 3 images */}
+        <div className="grid grid-cols-12 gap-4 md:gap-6">
+          {[
+            { src: spaceFront, alt: "Fachada interior con branding Energía Criativa y escaleras", label: "Conexiones" },
+            { src: spaceCowork, alt: "Zona de coworking con mesas, café y branding", label: "Coworking" },
+            { src: spaceEntrance, alt: "Entrada del hub con luz natural y vegetación", label: "Entrada" },
+          ].map((img, i) => (
+            <motion.div
+              key={img.label}
+              className="col-span-12 md:col-span-4 relative rounded-2xl overflow-hidden aspect-[4/3]"
+              style={{ y: y3 }}
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7, delay: i * 0.12, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <motion.img
+                src={img.src}
+                alt={img.alt}
+                className="w-full h-full object-cover"
+                whileHover={{ scale: 1.05 }}
+                transition={{ duration: 0.6 }}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-background/70 via-transparent to-transparent" />
+              <div className="absolute bottom-5 left-5">
+                <span className="inline-block px-3 py-1 bg-primary/20 backdrop-blur-sm text-primary text-xs font-heading font-medium rounded-full border border-primary/20">
+                  {img.label}
+                </span>
+              </div>
+            </motion.div>
+          ))}
         </div>
       </div>
     </section>

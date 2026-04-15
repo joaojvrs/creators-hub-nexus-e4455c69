@@ -23,6 +23,10 @@ const pillars = [
       "Tienda física conectada a TikTok Shop e Instagram Shop. Showroom de productos virales con demostraciones en vivo.",
     number: "02",
     gradient: "from-primary/15 to-primary/5",
+    logos: [
+      { src: tiktokShopLogo, alt: "TikTok Shop" },
+      { src: instagramShopLogo, alt: "Instagram Shop" },
+    ],
   },
   {
     icon: Globe,

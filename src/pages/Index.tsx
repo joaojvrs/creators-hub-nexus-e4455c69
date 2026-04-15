@@ -6,8 +6,11 @@ import ValueSection from "@/components/ValueSection";
 import AssistantSection from "@/components/AssistantSection";
 import ContactSection from "@/components/ContactSection";
 import FooterSection from "@/components/FooterSection";
+import useSmoothScroll from "@/hooks/useSmoothScroll";
 
 const Index = () => {
+  useSmoothScroll();
+
   return (
     <div className="min-h-screen bg-background">
       <Navbar />

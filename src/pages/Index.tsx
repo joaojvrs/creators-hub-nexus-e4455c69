@@ -21,6 +21,7 @@ const Index = () => {
       </div>
       <EcosystemSection />
       <ValueSection />
+      <BlogSection />
       <ContactSection />
       <FooterSection />
       <FloatingChat />

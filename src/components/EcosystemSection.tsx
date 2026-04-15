@@ -5,7 +5,17 @@ import TextReveal from "./TextReveal";
 import tiktokShopLogo from "@/assets/tiktok-shop-logo.png";
 import instagramShopLogo from "@/assets/instagram-shop-logo.png";
 
-const pillars = [
+type Pillar = {
+  icon: typeof Camera;
+  title: string;
+  subtitle: string;
+  description: string;
+  number: string;
+  gradient: string;
+  logos?: { src: string; alt: string }[];
+};
+
+const pillars: Pillar[] = [
   {
     icon: Camera,
     title: "Creators Studio",

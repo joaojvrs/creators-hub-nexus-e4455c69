@@ -1,8 +1,112 @@
-import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
+import { motion, useScroll, useTransform, useMotionValue, useSpring } from "framer-motion";
+import { useRef, useState, useEffect } from "react";
 import studioImg from "@/assets/studio-onair.png";
 import MagneticButton from "./MagneticButton";
-import TextReveal from "./TextReveal";
+
+const Hero3DTitle = () => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const mouseX = useMotionValue(0.5);
+  const mouseY = useMotionValue(0.5);
+
+  const rotateX = useSpring(useTransform(mouseY, [0, 1], [8, -8]), { stiffness: 100, damping: 20 });
+  const rotateY = useSpring(useTransform(mouseX, [0, 1], [-8, 8]), { stiffness: 100, damping: 20 });
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!containerRef.current) return;
+    const rect = containerRef.current.getBoundingClientRect();
+    mouseX.set((e.clientX - rect.left) / rect.width);
+    mouseY.set((e.clientY - rect.top) / rect.height);
+  };
+
+  const handleMouseLeave = () => {
+    mouseX.set(0.5);
+    mouseY.set(0.5);
+  };
+
+  const words = [
+    { text: "CREATORS", color: "text-foreground", delay: 0.1 },
+    { text: "HUB", color: "text-gradient", delay: 0.25 },
+    { text: "CLUB", color: "text-foreground", delay: 0.4 },
+  ];
+
+  return (
+    <motion.div
+      ref={containerRef}
+      className="mb-8 cursor-default select-none"
+      style={{ perspective: 1200 }}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+    >
+      <motion.div
+        style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
+      >
+        {words.map((word) => (
+          <div key={word.text} className="overflow-hidden relative">
+            <motion.span
+              className={`font-heading text-5xl md:text-7xl lg:text-8xl font-bold leading-[1] block ${word.color}`}
+              initial={{ y: "110%", rotateX: -80 }}
+              animate={{ y: "0%", rotateX: 0 }}
+              transition={{
+                duration: 1,
+                delay: word.delay,
+                ease: [0.22, 1, 0.36, 1],
+              }}
+            >
+              {word.text.split("").map((char, i) => (
+                <motion.span
+                  key={i}
+                  className="inline-block"
+                  whileHover={{
+                    y: -8,
+                    rotateZ: Math.random() > 0.5 ? 6 : -6,
+                    color: "hsl(160, 72%, 50%)",
+                    transition: { type: "spring", stiffness: 400, damping: 12 },
+                  }}
+                >
+                  {char}
+                </motion.span>
+              ))}
+            </motion.span>
+
+            {/* Shimmer sweep */}
+            <motion.div
+              className="absolute inset-0 pointer-events-none"
+              style={{
+                background: "linear-gradient(90deg, transparent 0%, hsl(160 72% 50% / 0.15) 50%, transparent 100%)",
+              }}
+              initial={{ x: "-100%" }}
+              animate={{ x: "200%" }}
+              transition={{ duration: 1.5, delay: word.delay + 0.6, ease: "easeInOut" }}
+            />
+          </div>
+        ))}
+      </motion.div>
+    </motion.div>
+  );
+};
+
+const FloatingParticle = ({ delay }: { delay: number }) => {
+  const x = Math.random() * 100;
+  const duration = 4 + Math.random() * 4;
+
+  return (
+    <motion.div
+      className="absolute w-1 h-1 rounded-full bg-primary/40"
+      style={{ left: `${x}%`, bottom: 0 }}
+      animate={{
+        y: [0, -400 - Math.random() * 300],
+        opacity: [0, 0.8, 0],
+        scale: [0, 1, 0.5],
+      }}
+      transition={{
+        duration,
+        delay,
+        repeat: Infinity,
+        ease: "easeOut",
+      }}
+    />
+  );
+};
 
 const HeroSection = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -27,11 +131,18 @@ const HeroSection = () => {
           height={1080}
         />
       </motion.div>
-      
+
       {/* Overlays */}
       <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-background/20" />
       <div className="absolute inset-0 bg-gradient-to-r from-background/60 to-transparent" />
       <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-background/80 to-transparent z-10" />
+
+      {/* Floating particles */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none z-10">
+        {Array.from({ length: 12 }).map((_, i) => (
+          <FloatingParticle key={i} delay={i * 0.6} />
+        ))}
+      </div>
 
       <motion.div className="relative z-10 container mx-auto px-6" style={{ y: contentY }}>
         <div className="max-w-3xl">
@@ -51,30 +162,8 @@ const HeroSection = () => {
             Barcelona — Calle Provençals 65
           </motion.p>
 
-          {/* Title with text reveal */}
-          <div className="mb-8">
-            <TextReveal
-              className="font-heading text-5xl md:text-7xl lg:text-8xl font-bold leading-[1] block text-foreground"
-              as="span"
-              delay={0.1}
-            >
-              CREATORS
-            </TextReveal>
-            <TextReveal
-              className="font-heading text-5xl md:text-7xl lg:text-8xl font-bold leading-[1] block text-gradient"
-              as="span"
-              delay={0.2}
-            >
-              HUB
-            </TextReveal>
-            <TextReveal
-              className="font-heading text-5xl md:text-7xl lg:text-8xl font-bold leading-[1] block text-foreground"
-              as="span"
-              delay={0.3}
-            >
-              CLUB
-            </TextReveal>
-          </div>
+          {/* 3D Interactive Title */}
+          <Hero3DTitle />
 
           <motion.div
             className="flex items-center gap-4 mb-8"

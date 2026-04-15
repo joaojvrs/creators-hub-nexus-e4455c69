@@ -22,6 +22,7 @@ const Index = () => {
       <ValueSection />
       <ContactSection />
       <FooterSection />
+      <FloatingChat />
     </div>
   );
 };

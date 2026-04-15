@@ -14,16 +14,16 @@ const TextReveal = ({ children, className = "", delay = 0, as: Tag = "span", onc
   return (
     <Tag className={className}>
       {words.map((word, i) => (
-        <span key={i} className="inline-block overflow-hidden mr-[0.3em]">
+        <span key={i} className="inline-block overflow-hidden mr-[0.3em] align-bottom">
           <motion.span
             className="inline-block"
-            initial={{ y: "110%", rotateX: -80 }}
-            whileInView={{ y: "0%", rotateX: 0 }}
+            initial={{ y: "100%" }}
+            whileInView={{ y: "0%" }}
             viewport={{ once }}
             transition={{
-              duration: 0.7,
-              delay: delay + i * 0.05,
-              ease: [0.215, 0.61, 0.355, 1],
+              duration: 0.6,
+              delay: delay + i * 0.04,
+              ease: [0.22, 1, 0.36, 1],
             }}
           >
             {word}

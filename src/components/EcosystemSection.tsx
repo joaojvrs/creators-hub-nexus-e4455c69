@@ -157,12 +157,21 @@ const PillarCard = ({ pillar, index }: { pillar: Pillar; index: number }) => {
             {pillar.description}
           </p>
 
-          {/* Partner logos */}
+          {/* Partner badges */}
           {pillar.logos && pillar.logos.length > 0 && (
-            <div className="flex items-center gap-3 mt-5 pt-4 border-t border-border/30 relative z-10">
-              <span className="text-[10px] tracking-wider uppercase text-muted-foreground font-heading mr-1">Powered by</span>
+            <div className="flex items-center gap-2 mt-5 pt-4 border-t border-border/30 relative z-10 flex-wrap">
+              <span className="text-[10px] tracking-wider uppercase text-muted-foreground/60 font-heading">Powered by</span>
               {pillar.logos.map((logo) => (
-                <motion.div
+                <motion.span
+                  key={logo.alt}
+                  className="text-[11px] font-heading font-semibold text-foreground/80 px-2.5 py-1 rounded-md bg-foreground/5 border border-foreground/10 group-hover:border-primary/20 group-hover:text-primary transition-colors duration-500"
+                  whileHover={{ scale: 1.05, y: -1 }}
+                >
+                  {logo.alt}
+                </motion.span>
+              ))}
+            </div>
+          )}
                   key={logo.alt}
                   className="h-7 w-auto bg-foreground/90 rounded-md px-2 py-1 flex items-center"
                   whileHover={{ scale: 1.1 }}

@@ -1,0 +1,37 @@
+import { motion } from "framer-motion";
+
+interface TextRevealProps {
+  children: string;
+  className?: string;
+  delay?: number;
+  as?: "h1" | "h2" | "h3" | "p" | "span";
+  once?: boolean;
+}
+
+const TextReveal = ({ children, className = "", delay = 0, as: Tag = "span", once = true }: TextRevealProps) => {
+  const words = children.split(" ");
+
+  return (
+    <Tag className={className}>
+      {words.map((word, i) => (
+        <span key={i} className="inline-block overflow-hidden mr-[0.3em]">
+          <motion.span
+            className="inline-block"
+            initial={{ y: "110%", rotateX: -80 }}
+            whileInView={{ y: "0%", rotateX: 0 }}
+            viewport={{ once }}
+            transition={{
+              duration: 0.7,
+              delay: delay + i * 0.05,
+              ease: [0.215, 0.61, 0.355, 1],
+            }}
+          >
+            {word}
+          </motion.span>
+        </span>
+      ))}
+    </Tag>
+  );
+};
+
+export default TextReveal;

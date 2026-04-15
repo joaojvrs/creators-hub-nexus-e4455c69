@@ -1,6 +1,8 @@
 import { useState, useRef, useEffect } from "react";
-import { motion } from "framer-motion";
-import { Send, Bot, User } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Send, Bot, User, Sparkles } from "lucide-react";
+import TextReveal from "./TextReveal";
+import MagneticButton from "./MagneticButton";
 
 type Message = { role: "user" | "assistant"; content: string };
 
@@ -27,6 +29,11 @@ const AUTO_RESPONSES: Record<string, string> = {
     "Tenemos tres niveles: 🥉 **Creators** (comunidad, eventos, descuentos), 🥈 **Creators Pro** (horas de estudio, formación, marketplace) y 🥇 **Creators Elite** (estrategia personalizada, producción premium, eventos privados). ¡Cada nivel está diseñado para impulsar tu crecimiento!",
 };
 
+const msgVariants = {
+  hidden: { opacity: 0, y: 20, scale: 0.95 },
+  visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.4, ease: [0.215, 0.61, 0.355, 1] as const } },
+};
+
 const AssistantSection = () => {
   const [messages, setMessages] = useState<Message[]>(INITIAL_MESSAGES);
   const [input, setInput] = useState("");
@@ -41,8 +48,7 @@ const AssistantSection = () => {
     const msg = text || input.trim();
     if (!msg) return;
 
-    const userMsg: Message = { role: "user", content: msg };
-    setMessages((prev) => [...prev, userMsg]);
+    setMessages((prev) => [...prev, { role: "user", content: msg }]);
     setInput("");
     setIsTyping(true);
 
@@ -56,93 +62,153 @@ const AssistantSection = () => {
   };
 
   return (
-    <section className="py-24 md:py-32 border-t border-border" id="asistente">
-      <div className="container mx-auto px-6">
+    <section className="py-24 md:py-32 border-t border-border relative overflow-hidden" id="asistente">
+      {/* Floating bg orb */}
+      <motion.div
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full bg-primary/[0.04] blur-[120px]"
+        animate={{ scale: [1, 1.1, 1] }}
+        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+      />
+
+      <div className="container mx-auto px-6 relative z-10">
         <motion.div
           className="text-center mb-12"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.8 }}
         >
-          <p className="text-primary font-heading text-sm tracking-[0.2em] uppercase mb-3">
+          <motion.div
+            className="inline-flex items-center gap-2 text-primary font-heading text-xs tracking-[0.2em] uppercase mb-3"
+            initial={{ opacity: 0, y: -10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+          >
+            <Sparkles className="w-3 h-3" />
             Asistente Virtual
-          </p>
-          <h2 className="font-heading text-3xl md:text-5xl font-bold mb-4">
+          </motion.div>
+          <TextReveal className="font-heading text-3xl md:text-5xl font-bold mb-4 block" as="h2">
             Pregúntanos lo que necesites
-          </h2>
-          <p className="text-muted-foreground max-w-xl mx-auto">
+          </TextReveal>
+          <motion.p
+            className="text-muted-foreground max-w-xl mx-auto"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.3 }}
+          >
             Nuestro asistente de IA está listo para resolver tus dudas sobre el ecosistema.
-          </p>
+          </motion.p>
         </motion.div>
 
         <motion.div
-          className="max-w-2xl mx-auto bg-card border border-border rounded-2xl overflow-hidden glow-green"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          className="max-w-2xl mx-auto bg-card border border-border rounded-2xl overflow-hidden glow-green relative"
+          initial={{ opacity: 0, y: 40, scale: 0.95 }}
+          whileInView={{ opacity: 1, y: 0, scale: 1 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.2 }}
+          transition={{ duration: 0.7, delay: 0.2, ease: [0.215, 0.61, 0.355, 1] }}
         >
+          {/* Animated border glow */}
+          <motion.div
+            className="absolute -inset-px rounded-2xl pointer-events-none"
+            style={{
+              background: "linear-gradient(135deg, hsl(160 72% 50% / 0.2), transparent, hsl(160 72% 50% / 0.1))",
+            }}
+            animate={{ opacity: [0.3, 0.6, 0.3] }}
+            transition={{ duration: 3, repeat: Infinity }}
+          />
+
           {/* Header */}
-          <div className="flex items-center gap-3 px-6 py-4 border-b border-border">
-            <div className="w-3 h-3 rounded-full bg-primary animate-pulse-glow" />
+          <div className="flex items-center gap-3 px-6 py-4 border-b border-border relative">
+            <motion.div
+              className="w-3 h-3 rounded-full bg-primary"
+              animate={{ scale: [1, 1.3, 1], opacity: [0.5, 1, 0.5] }}
+              transition={{ duration: 2, repeat: Infinity }}
+            />
             <span className="font-heading text-sm font-semibold">CHC Assistant</span>
             <span className="text-muted-foreground text-xs ml-auto">Online</span>
           </div>
 
           {/* Messages */}
           <div ref={scrollRef} className="h-80 overflow-y-auto px-6 py-4 space-y-4">
-            {messages.map((msg, i) => (
-              <div key={i} className={`flex gap-3 ${msg.role === "user" ? "justify-end" : ""}`}>
-                {msg.role === "assistant" && (
-                  <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                    <Bot className="w-4 h-4 text-primary" />
-                  </div>
-                )}
-                <div
-                  className={`max-w-[80%] rounded-xl px-4 py-3 text-sm leading-relaxed ${
-                    msg.role === "user"
-                      ? "bg-primary text-primary-foreground"
-                      : "bg-secondary text-secondary-foreground"
-                  }`}
+            <AnimatePresence>
+              {messages.map((msg, i) => (
+                <motion.div
+                  key={i}
+                  className={`flex gap-3 ${msg.role === "user" ? "justify-end" : ""}`}
+                  variants={msgVariants}
+                  initial="hidden"
+                  animate="visible"
+                  layout
                 >
-                  {msg.content}
-                </div>
-                {msg.role === "user" && (
-                  <div className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center flex-shrink-0">
-                    <User className="w-4 h-4 text-muted-foreground" />
+                  {msg.role === "assistant" && (
+                    <motion.div
+                      className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0"
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{ type: "spring", stiffness: 400, damping: 15 }}
+                    >
+                      <Bot className="w-4 h-4 text-primary" />
+                    </motion.div>
+                  )}
+                  <div
+                    className={`max-w-[80%] rounded-xl px-4 py-3 text-sm leading-relaxed ${
+                      msg.role === "user"
+                        ? "bg-primary text-primary-foreground"
+                        : "bg-secondary text-secondary-foreground"
+                    }`}
+                  >
+                    {msg.content}
                   </div>
-                )}
-              </div>
-            ))}
+                  {msg.role === "user" && (
+                    <div className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center flex-shrink-0">
+                      <User className="w-4 h-4 text-muted-foreground" />
+                    </div>
+                  )}
+                </motion.div>
+              ))}
+            </AnimatePresence>
             {isTyping && (
-              <div className="flex gap-3">
+              <motion.div
+                className="flex gap-3"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+              >
                 <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
                   <Bot className="w-4 h-4 text-primary" />
                 </div>
                 <div className="bg-secondary rounded-xl px-4 py-3 text-sm">
                   <span className="flex gap-1">
-                    <span className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce" style={{ animationDelay: "0ms" }} />
-                    <span className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce" style={{ animationDelay: "150ms" }} />
-                    <span className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce" style={{ animationDelay: "300ms" }} />
+                    <motion.span className="w-2 h-2 bg-muted-foreground rounded-full" animate={{ y: [0, -6, 0] }} transition={{ duration: 0.5, repeat: Infinity, delay: 0 }} />
+                    <motion.span className="w-2 h-2 bg-muted-foreground rounded-full" animate={{ y: [0, -6, 0] }} transition={{ duration: 0.5, repeat: Infinity, delay: 0.15 }} />
+                    <motion.span className="w-2 h-2 bg-muted-foreground rounded-full" animate={{ y: [0, -6, 0] }} transition={{ duration: 0.5, repeat: Infinity, delay: 0.3 }} />
                   </span>
                 </div>
-              </div>
+              </motion.div>
             )}
           </div>
 
           {/* Quick replies */}
           <div className="px-6 pb-3 flex flex-wrap gap-2">
-            {messages.length <= 1 &&
-              QUICK_REPLIES.map((reply) => (
-                <button
-                  key={reply}
-                  onClick={() => handleSend(reply)}
-                  className="text-xs px-3 py-1.5 rounded-full border border-primary/30 text-primary hover:bg-primary/10 transition-colors"
-                >
-                  {reply}
-                </button>
-              ))}
+            <AnimatePresence>
+              {messages.length <= 1 &&
+                QUICK_REPLIES.map((reply, i) => (
+                  <motion.button
+                    key={reply}
+                    onClick={() => handleSend(reply)}
+                    className="text-xs px-3 py-1.5 rounded-full border border-primary/30 text-primary hover:bg-primary/10 transition-colors"
+                    initial={{ opacity: 0, scale: 0.8, y: 10 }}
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                    exit={{ opacity: 0, scale: 0.8 }}
+                    transition={{ delay: 0.5 + i * 0.1 }}
+                    whileHover={{ scale: 1.05, borderColor: "hsl(160 72% 50% / 0.6)" }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    {reply}
+                  </motion.button>
+                ))}
+            </AnimatePresence>
           </div>
 
           {/* Input */}
@@ -159,14 +225,15 @@ const AssistantSection = () => {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 placeholder="Escribe tu mensaje..."
-                className="flex-1 bg-secondary text-foreground rounded-lg px-4 py-3 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary"
+                className="flex-1 bg-secondary text-foreground rounded-lg px-4 py-3 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary transition-shadow duration-300"
               />
-              <button
-                type="submit"
-                className="bg-primary text-primary-foreground rounded-lg px-4 hover:brightness-110 transition-all"
+              <MagneticButton
+                onClick={() => handleSend()}
+                strength={0.3}
+                className="bg-primary text-primary-foreground rounded-lg px-4 py-3 hover:brightness-110 transition-all"
               >
                 <Send className="w-4 h-4" />
-              </button>
+              </MagneticButton>
             </form>
           </div>
         </motion.div>

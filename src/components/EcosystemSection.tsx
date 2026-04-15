@@ -58,7 +58,7 @@ const pillars: Pillar[] = [
   },
 ];
 
-const PillarCard = ({ pillar, index }: { pillar: typeof pillars[0]; index: number }) => {
+const PillarCard = ({ pillar, index }: { pillar: Pillar; index: number }) => {
   const cardRef = useRef<HTMLDivElement>(null);
   const [hovered, setHovered] = useState(false);
   const mouseX = useMotionValue(0.5);

@@ -3,6 +3,7 @@ import HeroSection from "@/components/HeroSection";
 import SpaceShowcase from "@/components/SpaceShowcase";
 import EcosystemSection from "@/components/EcosystemSection";
 import ValueSection from "@/components/ValueSection";
+import BlogSection from "@/components/BlogSection";
 import ContactSection from "@/components/ContactSection";
 import FloatingChat from "@/components/FloatingChat";
 import FooterSection from "@/components/FooterSection";

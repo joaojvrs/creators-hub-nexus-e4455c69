@@ -2,8 +2,20 @@ import { motion, useScroll, useTransform, useMotionValue, useSpring } from "fram
 import { Camera, ShoppingBag, Globe, Users, ArrowUpRight } from "lucide-react";
 import { useRef, useState } from "react";
 import TextReveal from "./TextReveal";
+import tiktokShopLogo from "@/assets/tiktok-shop-logo.png";
+import instagramShopLogo from "@/assets/instagram-shop-logo.png";
 
-const pillars = [
+type Pillar = {
+  icon: typeof Camera;
+  title: string;
+  subtitle: string;
+  description: string;
+  number: string;
+  gradient: string;
+  logos?: { src: string; alt: string }[];
+};
+
+const pillars: Pillar[] = [
   {
     icon: Camera,
     title: "Creators Studio",
@@ -21,6 +33,10 @@ const pillars = [
       "Tienda física conectada a TikTok Shop e Instagram Shop. Showroom de productos virales con demostraciones en vivo.",
     number: "02",
     gradient: "from-primary/15 to-primary/5",
+    logos: [
+      { src: tiktokShopLogo, alt: "TikTok Shop" },
+      { src: instagramShopLogo, alt: "Instagram Shop" },
+    ],
   },
   {
     icon: Globe,
@@ -42,7 +58,7 @@ const pillars = [
   },
 ];
 
-const PillarCard = ({ pillar, index }: { pillar: typeof pillars[0]; index: number }) => {
+const PillarCard = ({ pillar, index }: { pillar: Pillar; index: number }) => {
   const cardRef = useRef<HTMLDivElement>(null);
   const [hovered, setHovered] = useState(false);
   const mouseX = useMotionValue(0.5);
@@ -140,6 +156,23 @@ const PillarCard = ({ pillar, index }: { pillar: typeof pillars[0]; index: numbe
           <p className="text-muted-foreground text-sm leading-relaxed group-hover:text-foreground/70 transition-colors duration-500 relative z-10">
             {pillar.description}
           </p>
+
+          {/* Partner logos */}
+          {pillar.logos && pillar.logos.length > 0 && (
+            <div className="flex items-center gap-3 mt-5 pt-4 border-t border-border/30 relative z-10">
+              <span className="text-[10px] tracking-wider uppercase text-muted-foreground font-heading mr-1">Powered by</span>
+              {pillar.logos.map((logo) => (
+                <motion.div
+                  key={logo.alt}
+                  className="h-7 w-auto bg-foreground/90 rounded-md px-2 py-1 flex items-center"
+                  whileHover={{ scale: 1.1 }}
+                  transition={{ type: "spring", stiffness: 300 }}
+                >
+                  <img src={logo.src} alt={logo.alt} className="h-full w-auto object-contain" loading="lazy" />
+                </motion.div>
+              ))}
+            </div>
+          )}
         </div>
       </motion.div>
     </motion.div>

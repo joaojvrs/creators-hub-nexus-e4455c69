@@ -1,10 +1,21 @@
 import { motion, useScroll, useTransform, useMotionValue, useSpring } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useEffect, useState } from "react";
 import studioImg from "@/assets/studio-onair.png";
-import creatorsLogo from "@/assets/creators-logo-white.png";
+import creatorsLogoWhite from "@/assets/creators-logo-white.png";
+import creatorsLogoBlack from "@/assets/creators-logo-black.png";
 import MagneticButton from "./MagneticButton";
 
 const CreatorsLogo = () => {
+  const [isDark, setIsDark] = useState(true);
+  useEffect(() => {
+    const check = () => setIsDark(document.documentElement.classList.contains("dark"));
+    check();
+    const observer = new MutationObserver(check);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+    return () => observer.disconnect();
+  }, []);
+
+  const logo = isDark ? creatorsLogoWhite : creatorsLogoBlack;
   const ref = useRef<HTMLDivElement>(null);
   const mouseX = useMotionValue(0.5);
   const mouseY = useMotionValue(0.5);
@@ -39,7 +50,7 @@ const CreatorsLogo = () => {
       >
         {/* Main logo */}
         <motion.img
-          src={creatorsLogo}
+          src={logo}
           alt="Creators Hub Club"
           className="h-16 md:h-24 lg:h-32 w-auto relative z-10"
           initial={{ scale: 0.6, opacity: 0, filter: "blur(20px)" }}

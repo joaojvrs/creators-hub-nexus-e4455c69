@@ -2,7 +2,10 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import MagneticButton from "./MagneticButton";
-import creatorsLogo from "@/assets/creators-logo-white.png";
+import ThemeToggle from "./ThemeToggle";
+import { useTheme } from "@/hooks/useTheme";
+import creatorsLogoWhite from "@/assets/creators-logo-white.png";
+import creatorsLogoBlack from "@/assets/creators-logo-black.png";
 
 const links = [
   { label: "Espacio", href: "#espacio" },
@@ -14,6 +17,8 @@ const links = [
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const { theme, toggleTheme } = useTheme();
+  const logo = theme === "dark" ? creatorsLogoWhite : creatorsLogoBlack;
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 60);
@@ -34,7 +39,7 @@ const Navbar = () => {
     >
       <div className="container mx-auto px-6 flex items-center justify-between h-16">
         <MagneticButton href="#" strength={0.2} className="flex items-center">
-          <img src={creatorsLogo} alt="Creators Hub Club" className="h-5 md:h-6 w-auto" />
+          <img src={logo} alt="Creators Hub Club" className="h-5 md:h-6 w-auto" />
         </MagneticButton>
 
         {/* Desktop links */}
@@ -57,29 +62,41 @@ const Navbar = () => {
           ))}
         </div>
 
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.6 }}
-        >
-          <MagneticButton
-            href="#contacto"
-            strength={0.3}
-            className="hidden md:inline-flex items-center px-5 py-2 bg-primary text-primary-foreground font-heading font-semibold text-xs rounded-full hover:brightness-110 transition-all hover:shadow-[0_0_30px_hsl(160_72%_50%/0.3)]"
+        <div className="hidden md:flex items-center gap-3">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.6 }}
           >
-            Reservar
-          </MagneticButton>
-        </motion.div>
+            <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.7 }}
+          >
+            <MagneticButton
+              href="#contacto"
+              strength={0.3}
+              className="inline-flex items-center px-5 py-2 bg-primary text-primary-foreground font-heading font-semibold text-xs rounded-full hover:brightness-110 transition-all hover:shadow-[0_0_30px_hsl(160_72%_50%/0.3)]"
+            >
+              Reservar
+            </MagneticButton>
+          </motion.div>
+        </div>
 
-        {/* Mobile toggle */}
-        <motion.button
-          onClick={() => setMenuOpen(!menuOpen)}
-          className="md:hidden text-foreground"
-          whileTap={{ scale: 0.9, rotate: 90 }}
-          transition={{ type: "spring", stiffness: 400 }}
-        >
-          {menuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-        </motion.button>
+        {/* Mobile: theme toggle + menu */}
+        <div className="flex md:hidden items-center gap-2">
+          <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
+          <motion.button
+            onClick={() => setMenuOpen(!menuOpen)}
+            className="text-foreground"
+            whileTap={{ scale: 0.9, rotate: 90 }}
+            transition={{ type: "spring", stiffness: 400 }}
+          >
+            {menuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          </motion.button>
+        </div>
       </div>
 
       {/* Mobile menu */}

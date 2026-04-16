@@ -39,7 +39,7 @@ const Navbar = () => {
     >
       <div className="container mx-auto px-6 flex items-center justify-between h-16">
         <MagneticButton href="#" strength={0.2} className="flex items-center">
-          <img src={creatorsLogo} alt="Creators Hub Club" className="h-5 md:h-6 w-auto" />
+          <img src={logo} alt="Creators Hub Club" className="h-5 md:h-6 w-auto" />
         </MagneticButton>
 
         {/* Desktop links */}

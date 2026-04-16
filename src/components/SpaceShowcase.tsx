@@ -164,6 +164,13 @@ const ReelsModal = ({ onClose }: { onClose: () => void }) => {
 /* ── Video Thumbnail ── */
 const VideoPlayer = ({ onOpenReel }: { onOpenReel: () => void }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const [muted, setMuted] = useState(true);
+
+  const toggleMute = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setMuted((m) => !m);
+    if (videoRef.current) videoRef.current.muted = !videoRef.current.muted;
+  };
 
   return (
     <motion.div
@@ -182,9 +189,18 @@ const VideoPlayer = ({ onOpenReel }: { onOpenReel: () => void }) => {
         muted
         loop
         playsInline
+        preload="metadata"
       />
 
       <div className="absolute inset-0 bg-gradient-to-t from-background/70 via-transparent to-background/20 pointer-events-none" />
+
+      {/* Mute / Unmute button */}
+      <button
+        onClick={toggleMute}
+        className="absolute top-4 right-4 z-20 w-9 h-9 rounded-full bg-background/40 backdrop-blur-md flex items-center justify-center border border-border/20 hover:bg-background/60 transition-colors"
+      >
+        {muted ? <VolumeX className="w-4 h-4 text-foreground/80" /> : <Volume2 className="w-4 h-4 text-foreground/80" />}
+      </button>
 
       {/* Play overlay on hover */}
       <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">

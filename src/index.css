@@ -28,8 +28,8 @@ html.lenis, html.lenis body {
     --popover: 0 0% 7%;
     --popover-foreground: 0 0% 98%;
 
-    --primary: 160 72% 50%;
-    --primary-foreground: 0 0% 4%;
+    --primary: 162 100% 35%;
+    --primary-foreground: 0 0% 100%;
 
     --secondary: 0 0% 12%;
     --secondary-foreground: 0 0% 98%;
@@ -37,7 +37,7 @@ html.lenis, html.lenis body {
     --muted: 0 0% 15%;
     --muted-foreground: 0 0% 64%;
 
-    --accent: 160 72% 50%;
+    --accent: 160 100% 55%;
     --accent-foreground: 0 0% 4%;
 
     --destructive: 0 84.2% 60.2%;
@@ -45,12 +45,15 @@ html.lenis, html.lenis body {
 
     --border: 0 0% 16%;
     --input: 0 0% 16%;
-    --ring: 160 72% 50%;
+    --ring: 162 100% 35%;
 
     --radius: 0.75rem;
 
-    --brand-green: 160 72% 50%;
-    --brand-green-glow: 160 72% 40%;
+    --brand-green: 162 100% 35%;
+    --brand-green-glow: 160 100% 55%;
+    --brand-amber: 25 100% 62%;
+    --brand-yellow: 40 100% 62%;
+    --brand-blue: 214 72% 58%;
 
     --sidebar-background: 0 0% 6%;
     --sidebar-foreground: 0 0% 98%;
@@ -80,22 +83,22 @@ html.lenis, html.lenis body {
 @layer utilities {
   .text-gradient {
     @apply bg-clip-text text-transparent;
-    background-image: linear-gradient(135deg, hsl(160 72% 50%), hsl(160 72% 70%));
+    background-image: linear-gradient(135deg, hsl(162 100% 35%), hsl(160 100% 55%));
   }
 
   .glow-green {
-    box-shadow: 0 0 40px hsl(160 72% 50% / 0.15), 0 0 80px hsl(160 72% 50% / 0.08);
+    box-shadow: 0 0 40px hsl(162 100% 35% / 0.15), 0 0 80px hsl(162 100% 35% / 0.08);
   }
 
   .glow-green-strong {
-    box-shadow: 0 0 30px hsl(160 72% 50% / 0.3), 0 0 60px hsl(160 72% 50% / 0.15);
+    box-shadow: 0 0 30px hsl(162 100% 35% / 0.3), 0 0 60px hsl(162 100% 35% / 0.15);
   }
 
   .border-glow {
-    border-color: hsl(160 72% 50% / 0.3);
+    border-color: hsl(162 100% 35% / 0.3);
   }
 
   .bg-radial-green {
-    background: radial-gradient(ellipse at center, hsl(160 72% 50% / 0.08) 0%, transparent 70%);
+    background: radial-gradient(ellipse at center, hsl(162 100% 35% / 0.08) 0%, transparent 70%);
   }
 }

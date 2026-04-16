@@ -1,9 +1,25 @@
 import { motion, useScroll, useTransform, useMotionValue, useSpring } from "framer-motion";
-import { useRef, useState, useEffect } from "react";
+import { useRef } from "react";
 import studioImg from "@/assets/studio-onair.png";
 import MagneticButton from "./MagneticButton";
 
-const Hero3DTitle = () => {
+const PillO = ({ color = "bg-primary", delay = 0 }: { color?: string; delay?: number }) => (
+  <motion.span
+    className={`inline-flex items-center justify-center w-[0.65em] h-[0.75em] ${color} rounded-[0.2em] align-baseline relative -top-[0.02em] mx-[0.02em]`}
+    initial={{ scale: 0, rotateY: -180 }}
+    animate={{ scale: 1, rotateY: 0 }}
+    transition={{ duration: 0.8, delay, type: "spring", stiffness: 200, damping: 15 }}
+    whileHover={{
+      scale: 1.1,
+      rotate: [0, -5, 5, 0],
+      transition: { duration: 0.4 },
+    }}
+  >
+    <span className="block w-[0.35em] h-[0.42em] bg-background rounded-[0.12em]" />
+  </motion.span>
+);
+
+const CreatorsLogo = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const mouseX = useMotionValue(0.5);
   const mouseY = useMotionValue(0.5);
@@ -23,12 +39,6 @@ const Hero3DTitle = () => {
     mouseY.set(0.5);
   };
 
-  const words = [
-    { text: "CREATORS", color: "text-foreground", delay: 0.1 },
-    { text: "HUB", color: "text-gradient", delay: 0.25 },
-    { text: "CLUB", color: "text-foreground", delay: 0.4 },
-  ];
-
   return (
     <motion.div
       ref={containerRef}
@@ -37,49 +47,46 @@ const Hero3DTitle = () => {
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
     >
-      <motion.div
-        style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
-      >
-        {words.map((word) => (
-          <div key={word.text} className="overflow-hidden relative">
-            <motion.span
-              className={`font-heading text-5xl md:text-7xl lg:text-8xl font-bold leading-[1] block ${word.color}`}
-              initial={{ y: "110%", rotateX: -80 }}
-              animate={{ y: "0%", rotateX: 0 }}
-              transition={{
-                duration: 1,
-                delay: word.delay,
-                ease: [0.22, 1, 0.36, 1],
-              }}
-            >
-              {word.text.split("").map((char, i) => (
-                <motion.span
-                  key={i}
-                  className="inline-block"
-                  whileHover={{
-                    y: -8,
-                    rotateZ: Math.random() > 0.5 ? 6 : -6,
-                    color: "hsl(160, 72%, 50%)",
-                    transition: { type: "spring", stiffness: 400, damping: 12 },
-                  }}
-                >
-                  {char}
-                </motion.span>
-              ))}
-            </motion.span>
+      <motion.div style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}>
+        {/* CREATORS with pill O */}
+        <div className="overflow-hidden relative">
+          <motion.div
+            className="font-heading text-5xl md:text-7xl lg:text-8xl font-bold leading-[1.05] block"
+            initial={{ y: "110%", rotateX: -80 }}
+            animate={{ y: "0%", rotateX: 0 }}
+            transition={{ duration: 1, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <span>CREAT</span>
+            <PillO color="bg-primary" delay={0.4} />
+            <span>RS</span>
+          </motion.div>
+          <motion.div
+            className="absolute inset-0 pointer-events-none"
+            style={{ background: "linear-gradient(90deg, transparent 0%, hsl(162 100% 35% / 0.15) 50%, transparent 100%)" }}
+            initial={{ x: "-100%" }}
+            animate={{ x: "200%" }}
+            transition={{ duration: 1.5, delay: 0.7, ease: "easeInOut" }}
+          />
+        </div>
 
-            {/* Shimmer sweep */}
-            <motion.div
-              className="absolute inset-0 pointer-events-none"
-              style={{
-                background: "linear-gradient(90deg, transparent 0%, hsl(160 72% 50% / 0.15) 50%, transparent 100%)",
-              }}
-              initial={{ x: "-100%" }}
-              animate={{ x: "200%" }}
-              transition={{ duration: 1.5, delay: word.delay + 0.6, ease: "easeInOut" }}
-            />
-          </div>
-        ))}
+        {/* HUB CLUB */}
+        <div className="overflow-hidden relative">
+          <motion.div
+            className="font-heading text-5xl md:text-7xl lg:text-8xl font-bold leading-[1.05] block text-gradient"
+            initial={{ y: "110%", rotateX: -80 }}
+            animate={{ y: "0%", rotateX: 0 }}
+            transition={{ duration: 1, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
+          >
+            HUB CLUB
+          </motion.div>
+          <motion.div
+            className="absolute inset-0 pointer-events-none"
+            style={{ background: "linear-gradient(90deg, transparent 0%, hsl(162 100% 35% / 0.15) 50%, transparent 100%)" }}
+            initial={{ x: "-100%" }}
+            animate={{ x: "200%" }}
+            transition={{ duration: 1.5, delay: 0.85, ease: "easeInOut" }}
+          />
+        </div>
       </motion.div>
     </motion.div>
   );
@@ -162,8 +169,8 @@ const HeroSection = () => {
             Barcelona — Calle Provençals 65
           </motion.p>
 
-          {/* 3D Interactive Title */}
-          <Hero3DTitle />
+          {/* Logo Title */}
+          <CreatorsLogo />
 
           <motion.div
             className="flex items-center gap-4 mb-8"

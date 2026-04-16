@@ -32,8 +32,8 @@ const Navbar = () => {
       transition={{ duration: 0.8, ease: [0.215, 0.61, 0.355, 1] }}
     >
       <div className="container mx-auto px-6 flex items-center justify-between h-16">
-        <MagneticButton href="#" strength={0.2} className="font-heading font-bold text-sm tracking-wider">
-          CREATORS <span className="text-gradient">HUB</span>
+        <MagneticButton href="#" strength={0.2} className="font-heading font-bold text-sm tracking-wider flex items-center">
+          CREAT<span className="inline-flex items-center justify-center w-[0.65em] h-[0.75em] bg-primary rounded-[0.2em] mx-[0.02em] relative -top-[0.01em]"><span className="block w-[0.35em] h-[0.42em] bg-background rounded-[0.12em]"></span></span>RS <span className="text-gradient ml-1">HUB</span>
         </MagneticButton>
 
         {/* Desktop links */}

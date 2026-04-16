@@ -308,7 +308,8 @@ const ContactSection = () => {
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2993.1!2d2.1989!3d41.4036!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12a4a33b0d7b0001%3A0x1!2sCalle%20Proven%C3%A7als%2065%2C%20Barcelona!5e0!3m2!1ses!2ses!4v1"
                 width="100%"
                 height="200"
-                style={{ border: 0, filter: "invert(90%) hue-rotate(180deg)" }}
+                style={{ border: 0 }}
+                className="dark:invert dark:hue-rotate-180"
                 allowFullScreen
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
@@ -373,7 +374,7 @@ const ContactSection = () => {
                       {i > 0 && (
                         <motion.div
                           className="w-8 h-px"
-                          style={{ backgroundColor: done ? "hsl(160 72% 50% / 0.5)" : "hsl(0 0% 20%)" }}
+                          style={{ backgroundColor: done ? "hsl(var(--primary) / 0.5)" : "hsl(var(--border))" }}
                           animate={{ scaleX: done ? 1 : 0.3 }}
                           transition={{ duration: 0.4 }}
                         />

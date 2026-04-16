@@ -1,11 +1,105 @@
 import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useState } from "react";
+import { Play, Pause, Volume2, VolumeX } from "lucide-react";
 import spaceOverview from "@/assets/space-overview.png";
 import studioOnair from "@/assets/studio-onair.png";
 import spaceFront from "@/assets/space-front.jpg";
 import spaceCowork from "@/assets/space-cowork.jpg";
 import spaceEntrance from "@/assets/space-entrance.jpg";
+import creatorsReel from "@/assets/creators-reel.mp4";
 import TextReveal from "./TextReveal";
+
+const VideoPlayer = () => {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [isPlaying, setIsPlaying] = useState(true);
+  const [isMuted, setIsMuted] = useState(true);
+
+  const togglePlay = () => {
+    if (!videoRef.current) return;
+    if (isPlaying) {
+      videoRef.current.pause();
+    } else {
+      videoRef.current.play();
+    }
+    setIsPlaying(!isPlaying);
+  };
+
+  const toggleMute = () => {
+    if (!videoRef.current) return;
+    videoRef.current.muted = !isMuted;
+    setIsMuted(!isMuted);
+  };
+
+  return (
+    <motion.div
+      className="relative rounded-2xl overflow-hidden aspect-[9/16] md:aspect-[4/3] lg:aspect-[16/10] group cursor-pointer"
+      initial={{ opacity: 0, scale: 0.9 }}
+      whileInView={{ opacity: 1, scale: 1 }}
+      viewport={{ once: true }}
+      transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+    >
+      <video
+        ref={videoRef}
+        src={creatorsReel}
+        className="w-full h-full object-cover"
+        autoPlay
+        muted
+        loop
+        playsInline
+      />
+
+      {/* Gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-background/20 pointer-events-none" />
+
+      {/* Controls */}
+      <div className="absolute bottom-4 left-4 right-4 flex items-end justify-between z-10">
+        <div>
+          <motion.span
+            className="inline-block px-3 py-1 bg-primary/20 backdrop-blur-md text-primary text-xs font-heading font-medium rounded-full border border-primary/20 mb-2"
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.6 }}
+          >
+            📍 Barcelona
+          </motion.span>
+          <p className="text-foreground font-heading text-sm font-semibold">Nuestro espacio en acción</p>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <button
+            onClick={toggleMute}
+            className="w-9 h-9 rounded-full bg-background/40 backdrop-blur-md border border-border/30 flex items-center justify-center text-foreground/80 hover:text-primary hover:border-primary/30 transition-all duration-300"
+          >
+            {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
+          </button>
+          <button
+            onClick={togglePlay}
+            className="w-9 h-9 rounded-full bg-primary/20 backdrop-blur-md border border-primary/30 flex items-center justify-center text-primary hover:bg-primary/30 transition-all duration-300"
+          >
+            {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4 ml-0.5" />}
+          </button>
+        </div>
+      </div>
+
+      {/* Live indicator */}
+      <motion.div
+        className="absolute top-4 left-4 flex items-center gap-2 px-3 py-1.5 bg-background/40 backdrop-blur-md rounded-full border border-border/20"
+        initial={{ opacity: 0, x: -20 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        viewport={{ once: true }}
+        transition={{ delay: 0.8 }}
+      >
+        <motion.div
+          className="w-2 h-2 rounded-full bg-primary"
+          animate={{ scale: [1, 1.4, 1], opacity: [0.5, 1, 0.5] }}
+          transition={{ duration: 1.5, repeat: Infinity }}
+        />
+        <span className="text-[10px] font-heading tracking-widest uppercase text-foreground/80">Reel</span>
+      </motion.div>
+    </motion.div>
+  );
+};
 
 const SpaceShowcase = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -21,7 +115,7 @@ const SpaceShowcase = () => {
   const scale2 = useTransform(scrollYProgress, [0.1, 0.6], [0.88, 1]);
 
   return (
-    <section ref={sectionRef} className="py-12 md:py-24 overflow-hidden">
+    <section ref={sectionRef} className="py-12 md:py-24 overflow-hidden" id="espacio">
       <div className="container mx-auto px-6">
         {/* Editorial heading */}
         <div className="flex items-end justify-between mb-10 md:mb-16">
@@ -59,37 +153,12 @@ const SpaceShowcase = () => {
           </motion.p>
         </div>
 
-        {/* Main asymmetric grid */}
+        {/* Main grid with video */}
         <div className="grid grid-cols-12 gap-4 md:gap-6 mb-6">
-          {/* Large image - overview */}
-          <motion.div
-            className="col-span-12 md:col-span-7 relative rounded-2xl overflow-hidden aspect-[4/3] md:aspect-[16/10]"
-            style={{ y: y1, scale: scale1 }}
-            initial={{ opacity: 0, x: -60 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.9, ease: [0.215, 0.61, 0.355, 1] }}
-          >
-            <motion.img
-              src={spaceOverview}
-              alt="Vista aérea del espacio Creators Hub Club"
-              className="w-full h-full object-cover"
-              whileHover={{ scale: 1.05 }}
-              transition={{ duration: 0.6 }}
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-background/60 to-transparent" />
-            <motion.div
-              className="absolute bottom-6 left-6"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.5 }}
-            >
-              <span className="inline-block px-3 py-1 bg-primary/20 backdrop-blur-sm text-primary text-xs font-heading font-medium rounded-full border border-primary/20">
-                Energía Creativa
-              </span>
-            </motion.div>
-          </motion.div>
+          {/* Video player - hero position */}
+          <div className="col-span-12 md:col-span-7">
+            <VideoPlayer />
+          </div>
 
           {/* Right column */}
           <div className="col-span-12 md:col-span-5 flex flex-col gap-4 md:gap-6">
@@ -129,7 +198,7 @@ const SpaceShowcase = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.7, delay: 0.3 }}
-              whileHover={{ borderColor: "hsl(160 72% 50% / 0.3)" }}
+              whileHover={{ borderColor: "hsl(162 100% 35% / 0.3)" }}
             >
               <div className="absolute inset-0 bg-radial-green opacity-0 group-hover:opacity-50 transition-opacity duration-700" />
               <div className="relative z-10">

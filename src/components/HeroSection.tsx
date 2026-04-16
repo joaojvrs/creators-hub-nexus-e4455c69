@@ -1,7 +1,8 @@
 import { motion, useScroll, useTransform, useMotionValue, useSpring } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useEffect, useState } from "react";
 import studioImg from "@/assets/studio-onair.png";
-import creatorsLogo from "@/assets/creators-logo-white.png";
+import creatorsLogoWhite from "@/assets/creators-logo-white.png";
+import creatorsLogoBlack from "@/assets/creators-logo-black.png";
 import MagneticButton from "./MagneticButton";
 
 const CreatorsLogo = () => {

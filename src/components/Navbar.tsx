@@ -62,19 +62,28 @@ const Navbar = () => {
           ))}
         </div>
 
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.6 }}
-        >
-          <MagneticButton
-            href="#contacto"
-            strength={0.3}
-            className="hidden md:inline-flex items-center px-5 py-2 bg-primary text-primary-foreground font-heading font-semibold text-xs rounded-full hover:brightness-110 transition-all hover:shadow-[0_0_30px_hsl(160_72%_50%/0.3)]"
+        <div className="hidden md:flex items-center gap-3">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.6 }}
           >
-            Reservar
-          </MagneticButton>
-        </motion.div>
+            <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.7 }}
+          >
+            <MagneticButton
+              href="#contacto"
+              strength={0.3}
+              className="inline-flex items-center px-5 py-2 bg-primary text-primary-foreground font-heading font-semibold text-xs rounded-full hover:brightness-110 transition-all hover:shadow-[0_0_30px_hsl(160_72%_50%/0.3)]"
+            >
+              Reservar
+            </MagneticButton>
+          </motion.div>
+        </div>
 
         {/* Mobile toggle */}
         <motion.button

@@ -1,7 +1,6 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef, useState } from "react";
 import { Play, Pause, Volume2, VolumeX } from "lucide-react";
-import spaceOverview from "@/assets/space-overview.png";
 import studioOnair from "@/assets/studio-onair.png";
 import spaceFront from "@/assets/space-front.jpg";
 import spaceCowork from "@/assets/space-cowork.jpg";
@@ -16,11 +15,8 @@ const VideoPlayer = () => {
 
   const togglePlay = () => {
     if (!videoRef.current) return;
-    if (isPlaying) {
-      videoRef.current.pause();
-    } else {
-      videoRef.current.play();
-    }
+    if (isPlaying) videoRef.current.pause();
+    else videoRef.current.play();
     setIsPlaying(!isPlaying);
   };
 
@@ -32,9 +28,9 @@ const VideoPlayer = () => {
 
   return (
     <motion.div
-      className="relative rounded-2xl overflow-hidden aspect-[9/16] md:aspect-[4/3] lg:aspect-[16/10] group cursor-pointer"
-      initial={{ opacity: 0, scale: 0.9 }}
-      whileInView={{ opacity: 1, scale: 1 }}
+      className="relative rounded-2xl overflow-hidden aspect-[9/16] max-h-[70vh] md:max-h-[80vh] w-full"
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
     >
@@ -48,39 +44,8 @@ const VideoPlayer = () => {
         playsInline
       />
 
-      {/* Gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-background/20 pointer-events-none" />
-
-      {/* Controls */}
-      <div className="absolute bottom-4 left-4 right-4 flex items-end justify-between z-10">
-        <div>
-          <motion.span
-            className="inline-block px-3 py-1 bg-primary/20 backdrop-blur-md text-primary text-xs font-heading font-medium rounded-full border border-primary/20 mb-2"
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.6 }}
-          >
-            📍 Barcelona
-          </motion.span>
-          <p className="text-foreground font-heading text-sm font-semibold">Nuestro espacio en acción</p>
-        </div>
-
-        <div className="flex items-center gap-2">
-          <button
-            onClick={toggleMute}
-            className="w-9 h-9 rounded-full bg-background/40 backdrop-blur-md border border-border/30 flex items-center justify-center text-foreground/80 hover:text-primary hover:border-primary/30 transition-all duration-300"
-          >
-            {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
-          </button>
-          <button
-            onClick={togglePlay}
-            className="w-9 h-9 rounded-full bg-primary/20 backdrop-blur-md border border-primary/30 flex items-center justify-center text-primary hover:bg-primary/30 transition-all duration-300"
-          >
-            {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4 ml-0.5" />}
-          </button>
-        </div>
-      </div>
+      {/* Gradient overlays */}
+      <div className="absolute inset-0 bg-gradient-to-t from-background/70 via-transparent to-background/20 pointer-events-none" />
 
       {/* Live indicator */}
       <motion.div
@@ -97,6 +62,30 @@ const VideoPlayer = () => {
         />
         <span className="text-[10px] font-heading tracking-widest uppercase text-foreground/80">Reel</span>
       </motion.div>
+
+      {/* Controls */}
+      <div className="absolute bottom-4 left-4 right-4 flex items-end justify-between z-10">
+        <div>
+          <span className="inline-block px-3 py-1 bg-primary/20 backdrop-blur-md text-primary text-xs font-heading font-medium rounded-full border border-primary/20 mb-2">
+            📍 Barcelona
+          </span>
+          <p className="text-foreground font-heading text-sm font-semibold">Nuestro espacio</p>
+        </div>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={toggleMute}
+            className="w-9 h-9 rounded-full bg-background/40 backdrop-blur-md border border-border/30 flex items-center justify-center text-foreground/80 hover:text-primary hover:border-primary/30 transition-all duration-300"
+          >
+            {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
+          </button>
+          <button
+            onClick={togglePlay}
+            className="w-9 h-9 rounded-full bg-primary/20 backdrop-blur-md border border-primary/30 flex items-center justify-center text-primary hover:bg-primary/30 transition-all duration-300"
+          >
+            {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4 ml-0.5" />}
+          </button>
+        </div>
+      </div>
     </motion.div>
   );
 };
@@ -108,16 +97,13 @@ const SpaceShowcase = () => {
     offset: ["start end", "end start"],
   });
 
-  const y1 = useTransform(scrollYProgress, [0, 1], [80, -80]);
-  const y2 = useTransform(scrollYProgress, [0, 1], [120, -50]);
-  const y3 = useTransform(scrollYProgress, [0, 1], [60, -60]);
-  const scale1 = useTransform(scrollYProgress, [0, 0.5], [0.92, 1]);
-  const scale2 = useTransform(scrollYProgress, [0.1, 0.6], [0.88, 1]);
+  const y2 = useTransform(scrollYProgress, [0, 1], [60, -40]);
+  const y3 = useTransform(scrollYProgress, [0, 1], [40, -40]);
 
   return (
     <section ref={sectionRef} className="py-12 md:py-24 overflow-hidden" id="espacio">
       <div className="container mx-auto px-6">
-        {/* Editorial heading */}
+        {/* Heading */}
         <div className="flex items-end justify-between mb-10 md:mb-16">
           <div>
             <motion.p
@@ -153,18 +139,19 @@ const SpaceShowcase = () => {
           </motion.p>
         </div>
 
-        {/* Main grid with video */}
+        {/* Main layout: vertical reel + right content stack */}
         <div className="grid grid-cols-12 gap-4 md:gap-6 mb-6">
-          {/* Video player - hero position */}
-          <div className="col-span-12 md:col-span-7">
+          {/* Reel video — 9:16 vertical */}
+          <div className="col-span-12 md:col-span-4 lg:col-span-3 flex justify-center">
             <VideoPlayer />
           </div>
 
-          {/* Right column */}
-          <div className="col-span-12 md:col-span-5 flex flex-col gap-4 md:gap-6">
+          {/* Right content — stacked images + info */}
+          <div className="col-span-12 md:col-span-8 lg:col-span-9 grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
+            {/* Studio ON AIR */}
             <motion.div
-              className="relative rounded-2xl overflow-hidden aspect-[4/3]"
-              style={{ y: y2, scale: scale2 }}
+              className="relative rounded-2xl overflow-hidden aspect-[16/10]"
+              style={{ y: y2 }}
               initial={{ opacity: 0, x: 60 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
@@ -172,32 +159,50 @@ const SpaceShowcase = () => {
             >
               <motion.img
                 src={studioOnair}
-                alt="Estudio ON AIR con iluminación verde neón"
+                alt="Estudio ON AIR"
                 className="w-full h-full object-cover"
                 whileHover={{ scale: 1.05 }}
                 transition={{ duration: 0.6 }}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-background/60 to-transparent" />
-              <motion.div
-                className="absolute bottom-6 left-6"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.6 }}
-              >
+              <div className="absolute bottom-5 left-5">
                 <span className="inline-block px-3 py-1 bg-primary/20 backdrop-blur-sm text-primary text-xs font-heading font-medium rounded-full border border-primary/20">
                   Creators Studio
                 </span>
-              </motion.div>
+              </div>
+            </motion.div>
+
+            {/* Cowork */}
+            <motion.div
+              className="relative rounded-2xl overflow-hidden aspect-[16/10]"
+              style={{ y: y3 }}
+              initial={{ opacity: 0, x: 60 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.9, delay: 0.25, ease: [0.215, 0.61, 0.355, 1] }}
+            >
+              <motion.img
+                src={spaceCowork}
+                alt="Zona de coworking"
+                className="w-full h-full object-cover"
+                whileHover={{ scale: 1.05 }}
+                transition={{ duration: 0.6 }}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-background/60 to-transparent" />
+              <div className="absolute bottom-5 left-5">
+                <span className="inline-block px-3 py-1 bg-primary/20 backdrop-blur-sm text-primary text-xs font-heading font-medium rounded-full border border-primary/20">
+                  Coworking
+                </span>
+              </div>
             </motion.div>
 
             {/* Info block */}
             <motion.div
-              className="bg-card border border-border rounded-2xl p-6 md:p-8 flex-1 flex flex-col justify-center relative overflow-hidden group"
+              className="bg-card border border-border rounded-2xl p-6 md:p-8 flex flex-col justify-center relative overflow-hidden group"
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.7, delay: 0.3 }}
+              transition={{ duration: 0.7, delay: 0.35 }}
               whileHover={{ borderColor: "hsl(162 100% 35% / 0.3)" }}
             >
               <div className="absolute inset-0 bg-radial-green opacity-0 group-hover:opacity-50 transition-opacity duration-700" />
@@ -218,28 +223,19 @@ const SpaceShowcase = () => {
                 </p>
               </div>
             </motion.div>
-          </div>
-        </div>
 
-        {/* Second row — 3 images */}
-        <div className="grid grid-cols-12 gap-4 md:gap-6">
-          {[
-            { src: spaceFront, alt: "Fachada interior con branding Energía Criativa y escaleras", label: "Conexiones" },
-            { src: spaceCowork, alt: "Zona de coworking con mesas, café y branding", label: "Coworking" },
-            { src: spaceEntrance, alt: "Entrada del hub con luz natural y vegetación", label: "Entrada" },
-          ].map((img, i) => (
+            {/* Entrance */}
             <motion.div
-              key={img.label}
-              className="col-span-12 md:col-span-4 relative rounded-2xl overflow-hidden aspect-[4/3]"
+              className="relative rounded-2xl overflow-hidden aspect-[16/10]"
               style={{ y: y3 }}
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.7, delay: i * 0.12, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 0.7, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
             >
               <motion.img
-                src={img.src}
-                alt={img.alt}
+                src={spaceFront}
+                alt="Fachada interior"
                 className="w-full h-full object-cover"
                 whileHover={{ scale: 1.05 }}
                 transition={{ duration: 0.6 }}
@@ -247,11 +243,11 @@ const SpaceShowcase = () => {
               <div className="absolute inset-0 bg-gradient-to-t from-background/70 via-transparent to-transparent" />
               <div className="absolute bottom-5 left-5">
                 <span className="inline-block px-3 py-1 bg-primary/20 backdrop-blur-sm text-primary text-xs font-heading font-medium rounded-full border border-primary/20">
-                  {img.label}
+                  Conexiones
                 </span>
               </div>
             </motion.div>
-          ))}
+          </div>
         </div>
       </div>
     </section>

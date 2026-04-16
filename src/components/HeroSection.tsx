@@ -50,7 +50,7 @@ const CreatorsLogo = () => {
       >
         {/* Main logo */}
         <motion.img
-          src={creatorsLogo}
+          src={logo}
           alt="Creators Hub Club"
           className="h-16 md:h-24 lg:h-32 w-auto relative z-10"
           initial={{ scale: 0.6, opacity: 0, filter: "blur(20px)" }}

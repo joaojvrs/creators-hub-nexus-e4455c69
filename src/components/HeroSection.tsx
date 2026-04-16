@@ -1,93 +1,30 @@
-import { motion, useScroll, useTransform, useMotionValue, useSpring } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import studioImg from "@/assets/studio-onair.png";
+import creatorsLogo from "@/assets/creators-logo-white.png";
 import MagneticButton from "./MagneticButton";
 
-const PillO = ({ color = "bg-primary", delay = 0 }: { color?: string; delay?: number }) => (
-  <motion.span
-    className={`inline-flex items-center justify-center w-[0.65em] h-[0.75em] ${color} rounded-[0.2em] align-baseline relative -top-[0.02em] mx-[0.02em]`}
-    initial={{ scale: 0, rotateY: -180 }}
-    animate={{ scale: 1, rotateY: 0 }}
-    transition={{ duration: 0.8, delay, type: "spring", stiffness: 200, damping: 15 }}
-    whileHover={{
-      scale: 1.1,
-      rotate: [0, -5, 5, 0],
-      transition: { duration: 0.4 },
-    }}
-  >
-    <span className="block w-[0.35em] h-[0.42em] bg-background rounded-[0.12em]" />
-  </motion.span>
-);
-
 const CreatorsLogo = () => {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const mouseX = useMotionValue(0.5);
-  const mouseY = useMotionValue(0.5);
-
-  const rotateX = useSpring(useTransform(mouseY, [0, 1], [8, -8]), { stiffness: 100, damping: 20 });
-  const rotateY = useSpring(useTransform(mouseX, [0, 1], [-8, 8]), { stiffness: 100, damping: 20 });
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (!containerRef.current) return;
-    const rect = containerRef.current.getBoundingClientRect();
-    mouseX.set((e.clientX - rect.left) / rect.width);
-    mouseY.set((e.clientY - rect.top) / rect.height);
-  };
-
-  const handleMouseLeave = () => {
-    mouseX.set(0.5);
-    mouseY.set(0.5);
-  };
-
   return (
-    <motion.div
-      ref={containerRef}
-      className="mb-8 cursor-default select-none"
-      style={{ perspective: 1200 }}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-    >
-      <motion.div style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}>
-        {/* CREATORS with pill O */}
-        <div className="overflow-hidden relative">
-          <motion.div
-            className="font-heading text-5xl md:text-7xl lg:text-8xl font-bold leading-[1.05] block"
-            initial={{ y: "110%", rotateX: -80 }}
-            animate={{ y: "0%", rotateX: 0 }}
-            transition={{ duration: 1, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <span>CREAT</span>
-            <PillO color="bg-primary" delay={0.4} />
-            <span>RS</span>
-          </motion.div>
-          <motion.div
-            className="absolute inset-0 pointer-events-none"
-            style={{ background: "linear-gradient(90deg, transparent 0%, hsl(162 100% 35% / 0.15) 50%, transparent 100%)" }}
-            initial={{ x: "-100%" }}
-            animate={{ x: "200%" }}
-            transition={{ duration: 1.5, delay: 0.7, ease: "easeInOut" }}
-          />
-        </div>
-
-        {/* HUB CLUB */}
-        <div className="overflow-hidden relative">
-          <motion.div
-            className="font-heading text-5xl md:text-7xl lg:text-8xl font-bold leading-[1.05] block text-gradient"
-            initial={{ y: "110%", rotateX: -80 }}
-            animate={{ y: "0%", rotateX: 0 }}
-            transition={{ duration: 1, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
-          >
-            HUB CLUB
-          </motion.div>
-          <motion.div
-            className="absolute inset-0 pointer-events-none"
-            style={{ background: "linear-gradient(90deg, transparent 0%, hsl(162 100% 35% / 0.15) 50%, transparent 100%)" }}
-            initial={{ x: "-100%" }}
-            animate={{ x: "200%" }}
-            transition={{ duration: 1.5, delay: 0.85, ease: "easeInOut" }}
-          />
-        </div>
-      </motion.div>
+    <motion.div className="mb-8 select-none">
+      <div className="overflow-hidden relative">
+        <motion.img
+          src={creatorsLogo}
+          alt="Creators Hub Club"
+          className="h-16 md:h-24 lg:h-32 w-auto"
+          initial={{ y: "110%", opacity: 0 }}
+          animate={{ y: "0%", opacity: 1 }}
+          transition={{ duration: 1, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+        />
+        {/* Shimmer sweep */}
+        <motion.div
+          className="absolute inset-0 pointer-events-none"
+          style={{ background: "linear-gradient(90deg, transparent 0%, hsl(162 100% 35% / 0.2) 50%, transparent 100%)" }}
+          initial={{ x: "-100%" }}
+          animate={{ x: "200%" }}
+          transition={{ duration: 1.5, delay: 0.7, ease: "easeInOut" }}
+        />
+      </div>
     </motion.div>
   );
 };

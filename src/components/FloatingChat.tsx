@@ -94,7 +94,7 @@ const FloatingChat = () => {
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            className="fixed bottom-6 right-6 z-50 w-[380px] max-w-[calc(100vw-2rem)] bg-card border border-border rounded-2xl shadow-2xl shadow-black/30 overflow-hidden flex flex-col"
+            className="fixed bottom-6 right-6 z-50 w-[380px] max-w-[calc(100vw-2rem)] bg-card border border-border rounded-2xl shadow-2xl shadow-black/10 dark:shadow-black/30 overflow-hidden flex flex-col"
             style={{ height: "min(520px, calc(100vh - 4rem))" }}
             initial={{ opacity: 0, y: 40, scale: 0.9 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}

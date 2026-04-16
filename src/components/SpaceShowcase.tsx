@@ -231,6 +231,10 @@ const SpaceShowcase = () => {
   const y3 = useTransform(scrollYProgress, [0, 1], [40, -40]);
 
   return (
+    <>
+      <AnimatePresence>
+        {reelOpen && <ReelsModal onClose={() => setReelOpen(false)} />}
+      </AnimatePresence>
     <section ref={sectionRef} className="py-12 md:py-24 overflow-hidden" id="espacio">
       <div className="container mx-auto px-6">
         {/* Heading */}
@@ -273,7 +277,7 @@ const SpaceShowcase = () => {
         <div className="grid grid-cols-12 gap-4 md:gap-6 mb-6">
           {/* Reel video — 9:16 vertical */}
           <div className="col-span-12 md:col-span-4 lg:col-span-3 flex justify-center">
-            <VideoPlayer />
+            <VideoPlayer onOpenReel={() => setReelOpen(true)} />
           </div>
 
           {/* Right content — stacked images + info */}
@@ -381,6 +385,7 @@ const SpaceShowcase = () => {
         </div>
       </div>
     </section>
+    </>
   );
 };
 

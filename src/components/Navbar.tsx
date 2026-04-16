@@ -2,7 +2,10 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import MagneticButton from "./MagneticButton";
-import creatorsLogo from "@/assets/creators-logo-white.png";
+import ThemeToggle from "./ThemeToggle";
+import { useTheme } from "@/hooks/useTheme";
+import creatorsLogoWhite from "@/assets/creators-logo-white.png";
+import creatorsLogoBlack from "@/assets/creators-logo-black.png";
 
 const links = [
   { label: "Espacio", href: "#espacio" },

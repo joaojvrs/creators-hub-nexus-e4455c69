@@ -220,6 +220,7 @@ const VideoPlayer = ({ onOpenReel }: { onOpenReel: () => void }) => {
 };
 
 const SpaceShowcase = () => {
+  const [reelOpen, setReelOpen] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: sectionRef,

@@ -2,6 +2,7 @@ import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion"
 import { useRef, useState, useEffect } from "react";
 import { Play, Pause, Volume2, VolumeX, Heart, MessageCircle, Send, Bookmark, X, MoreHorizontal } from "lucide-react";
 import studioOnair from "@/assets/studio-onair.png";
+import spaceMeeting from "@/assets/space-meeting.jpg";
 import spaceFront from "@/assets/space-front.jpg";
 import spaceCowork from "@/assets/space-cowork.jpg";
 import creatorsReel from "@/assets/creators-reel.mp4";

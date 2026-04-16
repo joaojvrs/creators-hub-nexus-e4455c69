@@ -85,15 +85,18 @@ const Navbar = () => {
           </motion.div>
         </div>
 
-        {/* Mobile toggle */}
-        <motion.button
-          onClick={() => setMenuOpen(!menuOpen)}
-          className="md:hidden text-foreground"
-          whileTap={{ scale: 0.9, rotate: 90 }}
-          transition={{ type: "spring", stiffness: 400 }}
-        >
-          {menuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-        </motion.button>
+        {/* Mobile: theme toggle + menu */}
+        <div className="flex md:hidden items-center gap-2">
+          <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
+          <motion.button
+            onClick={() => setMenuOpen(!menuOpen)}
+            className="text-foreground"
+            whileTap={{ scale: 0.9, rotate: 90 }}
+            transition={{ type: "spring", stiffness: 400 }}
+          >
+            {menuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          </motion.button>
+        </div>
       </div>
 
       {/* Mobile menu */}

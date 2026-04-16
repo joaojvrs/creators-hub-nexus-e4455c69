@@ -349,29 +349,24 @@ const SpaceShowcase = () => {
 
             {/* Info block */}
             <motion.div
-              className="bg-card border border-border rounded-2xl p-6 md:p-8 flex flex-col justify-center relative overflow-hidden group"
+              className="relative rounded-2xl overflow-hidden aspect-[16/10]"
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.7, delay: 0.35 }}
-              whileHover={{ borderColor: "hsl(162 100% 35% / 0.3)" }}
             >
-              <div className="absolute inset-0 bg-radial-green opacity-0 group-hover:opacity-50 transition-opacity duration-700" />
-              <div className="relative z-10">
-                <div className="flex items-center gap-3 mb-3">
-                  <motion.div
-                    className="w-2 h-2 rounded-full bg-primary"
-                    animate={{ scale: [1, 1.5, 1], opacity: [0.4, 1, 0.4] }}
-                    transition={{ duration: 2, repeat: Infinity }}
-                  />
-                  <span className="text-primary font-heading text-xs tracking-widest uppercase">En construcción</span>
-                </div>
-                <TextReveal className="text-foreground font-heading text-xl font-semibold mb-2 block" as="p">
-                  Abrimos pronto
-                </TextReveal>
-                <p className="text-muted-foreground text-sm leading-relaxed">
-                  Estudio profesional de podcast, sets para grabación, showroom de productos y zona de networking.
-                </p>
+              <motion.img
+                src={spaceMeeting}
+                alt="Sala de reuniones - Juntos vamos más allá"
+                className="w-full h-full object-cover"
+                whileHover={{ scale: 1.05 }}
+                transition={{ duration: 0.6 }}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-background/60 to-transparent" />
+              <div className="absolute bottom-5 left-5">
+                <span className="inline-block px-3 py-1 bg-primary/20 backdrop-blur-sm text-primary text-xs font-heading font-medium rounded-full border border-primary/20">
+                  Meeting Room
+                </span>
               </div>
             </motion.div>
 

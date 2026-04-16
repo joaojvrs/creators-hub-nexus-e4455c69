@@ -1,30 +1,86 @@
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, useMotionValue, useSpring } from "framer-motion";
 import { useRef } from "react";
 import studioImg from "@/assets/studio-onair.png";
 import creatorsLogo from "@/assets/creators-logo-white.png";
 import MagneticButton from "./MagneticButton";
 
 const CreatorsLogo = () => {
+  const ref = useRef<HTMLDivElement>(null);
+  const mouseX = useMotionValue(0.5);
+  const mouseY = useMotionValue(0.5);
+  const rotateX = useSpring(useTransform(mouseY, [0, 1], [12, -12]), { stiffness: 150, damping: 20 });
+  const rotateY = useSpring(useTransform(mouseX, [0, 1], [-12, 12]), { stiffness: 150, damping: 20 });
+  const glowX = useSpring(useTransform(mouseX, [0, 1], [0, 100]), { stiffness: 200, damping: 30 });
+  const glowY = useSpring(useTransform(mouseY, [0, 1], [0, 100]), { stiffness: 200, damping: 30 });
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!ref.current) return;
+    const rect = ref.current.getBoundingClientRect();
+    mouseX.set((e.clientX - rect.left) / rect.width);
+    mouseY.set((e.clientY - rect.top) / rect.height);
+  };
+
+  const handleMouseLeave = () => {
+    mouseX.set(0.5);
+    mouseY.set(0.5);
+  };
+
   return (
-    <motion.div className="mb-8 select-none">
-      <div className="overflow-hidden relative">
+    <motion.div
+      ref={ref}
+      className="mb-8 select-none cursor-default relative"
+      style={{ perspective: 1000 }}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+    >
+      <motion.div
+        className="relative inline-block"
+        style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
+      >
+        {/* Main logo */}
         <motion.img
           src={creatorsLogo}
           alt="Creators Hub Club"
-          className="h-16 md:h-24 lg:h-32 w-auto"
-          initial={{ y: "110%", opacity: 0 }}
-          animate={{ y: "0%", opacity: 1 }}
-          transition={{ duration: 1, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+          className="h-16 md:h-24 lg:h-32 w-auto relative z-10"
+          initial={{ scale: 0.6, opacity: 0, filter: "blur(20px)" }}
+          animate={{ scale: 1, opacity: 1, filter: "blur(0px)" }}
+          transition={{ duration: 1.2, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
         />
-        {/* Shimmer sweep */}
+
+        {/* Dynamic glow that follows cursor */}
         <motion.div
-          className="absolute inset-0 pointer-events-none"
-          style={{ background: "linear-gradient(90deg, transparent 0%, hsl(162 100% 35% / 0.2) 50%, transparent 100%)" }}
-          initial={{ x: "-100%" }}
-          animate={{ x: "200%" }}
-          transition={{ duration: 1.5, delay: 0.7, ease: "easeInOut" }}
+          className="absolute inset-0 z-0 rounded-xl pointer-events-none"
+          style={{
+            background: useTransform(
+              [glowX, glowY],
+              ([x, y]) => `radial-gradient(circle at ${x}% ${y}%, hsl(162 100% 35% / 0.25) 0%, transparent 60%)`
+            ),
+            filter: "blur(30px)",
+            transform: "translateZ(-10px) scale(1.5)",
+          }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.8, duration: 1 }}
         />
-      </div>
+
+        {/* Shimmer sweep repeating */}
+        <motion.div
+          className="absolute inset-0 pointer-events-none z-20"
+          style={{
+            background: "linear-gradient(90deg, transparent 0%, hsl(162 100% 50% / 0.15) 45%, hsl(162 100% 70% / 0.25) 50%, hsl(162 100% 50% / 0.15) 55%, transparent 100%)",
+          }}
+          initial={{ x: "-100%" }}
+          animate={{ x: ["−100%", "200%"] }}
+          transition={{ duration: 2, delay: 0.8, ease: "easeInOut", repeat: Infinity, repeatDelay: 4 }}
+        />
+
+        {/* Subtle floating shadow underneath */}
+        <motion.div
+          className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-3/4 h-6 bg-primary/10 blur-xl rounded-full z-0 pointer-events-none"
+          animate={{ scaleX: [0.8, 1.1, 0.8], opacity: [0.3, 0.6, 0.3] }}
+          transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+        />
+      </motion.div>
     </motion.div>
   );
 };

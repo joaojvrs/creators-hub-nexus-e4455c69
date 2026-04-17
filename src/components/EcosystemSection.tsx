@@ -98,6 +98,7 @@ const PillarCard = ({ pillar, index }: { pillar: Pillar; index: number }) => {
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={handleMouseLeave}
     >
+      <Link to={`/pilar/${pillar.slug}`} className="block h-full" aria-label={`Ver detalle ${pillar.title}`}>
       <motion.div
         className="relative h-full rounded-2xl border border-border/50 bg-card/50 backdrop-blur-sm p-7 md:p-8 overflow-hidden transition-colors duration-500 group-hover:border-primary/30"
         style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}

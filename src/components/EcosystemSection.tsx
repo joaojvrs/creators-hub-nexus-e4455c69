@@ -181,6 +181,7 @@ const PillarCard = ({ pillar, index }: { pillar: Pillar; index: number }) => {
           )}
         </div>
       </motion.div>
+      </Link>
     </motion.div>
   );
 };

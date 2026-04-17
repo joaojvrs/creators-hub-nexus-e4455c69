@@ -1,50 +1,11 @@
 import { motion } from "framer-motion";
 import { ArrowUpRight, Clock, Tag } from "lucide-react";
+import { Link } from "react-router-dom";
 import TextReveal from "./TextReveal";
 import MagneticButton from "./MagneticButton";
-import blogCreator from "@/assets/blog-tiktok-creator.jpg";
-import blogEcommerce from "@/assets/blog-ecommerce.jpg";
-import blogCommunity from "@/assets/blog-community.jpg";
-import blogViral from "@/assets/blog-viral.jpg";
+import { blogPosts } from "@/data/blogPosts";
 
-const posts = [
-  {
-    image: blogCreator,
-    tag: "TikTok Shop",
-    date: "12 Abr 2026",
-    title: "Cómo los creadores están facturando +10K€/mes con TikTok Shop en España",
-    excerpt:
-      "El social commerce ha revolucionado la forma en que los creadores monetizan su audiencia. Analizamos las estrategias que están funcionando en el mercado español.",
-    readTime: "5 min",
-  },
-  {
-    image: blogViral,
-    tag: "Tendencias",
-    date: "8 Abr 2026",
-    title: "Los 5 formatos de vídeo que más venden en TikTok Shop este 2026",
-    excerpt:
-      "Desde unboxings hasta reviews en directo, descubre qué tipo de contenido genera más conversiones.",
-    readTime: "4 min",
-  },
-  {
-    image: blogEcommerce,
-    tag: "E-commerce",
-    date: "3 Abr 2026",
-    title: "Instagram Shop vs TikTok Shop: ¿Cuál convierte más para creadores?",
-    excerpt:
-      "Comparativa real con datos de creadores de nuestra comunidad que venden en ambas plataformas.",
-    readTime: "6 min",
-  },
-  {
-    image: blogCommunity,
-    tag: "Comunidad",
-    date: "28 Mar 2026",
-    title: "Creators Hub Club abre sus puertas: así fue nuestro primer meetup",
-    excerpt:
-      "Más de 50 creadores se reunieron en Barcelona para conectar, aprender y descubrir nuevas oportunidades.",
-    readTime: "3 min",
-  },
-];
+const posts = blogPosts;
 
 const BlogSection = () => {
   return (

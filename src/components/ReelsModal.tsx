@@ -1,6 +1,6 @@
 import { motion, AnimatePresence, PanInfo } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
-import { VolumeX, Volume2, Heart, MessageCircle, Send, Bookmark, X, MoreHorizontal } from "lucide-react";
+import { VolumeX, Volume2, Heart, MessageCircle, Send, Bookmark, X, MoreHorizontal, ChevronUp } from "lucide-react";
 import creatorsLogo from "@/assets/creators-logo-white.png";
 
 const REELS = [
@@ -57,7 +57,7 @@ const ReelItem = ({
   }, []);
 
   return (
-    <div className="relative w-full h-full snap-start shrink-0">
+    <div className="relative w-full h-full shrink-0">
       <video
         ref={videoRef}
         src={reel.src}
@@ -66,10 +66,10 @@ const ReelItem = ({
         loop
         playsInline
         muted={isMuted}
-        preload={isActive ? "auto" : "metadata"}
+        preload="auto"
       />
       <div className="absolute top-0 left-0 right-0 h-[2px] bg-white/20 z-20">
-        <div className="h-full bg-white" style={{ width: `${progress}%` }} />
+        <div className="h-full bg-white transition-[width] duration-150" style={{ width: `${progress}%` }} />
       </div>
 
       <div className="absolute right-3 bottom-24 flex flex-col items-center gap-5 z-20">
@@ -163,16 +163,16 @@ const ReelsModal = ({ onClose }: { onClose: () => void }) => {
 
         <div ref={containerRef} className="flex-1 relative overflow-hidden">
           <motion.div
-            className="absolute inset-0 flex flex-col"
+            className="absolute inset-0 w-full h-full"
             animate={{ y: `-${activeIdx * 100}%` }}
-            transition={{ type: "spring", damping: 30, stiffness: 200 }}
+            transition={{ type: "spring", damping: 32, stiffness: 260, mass: 0.8 }}
             drag="y"
             dragConstraints={{ top: 0, bottom: 0 }}
-            dragElastic={0.2}
+            dragElastic={0.18}
             onDragEnd={handleDragEnd}
           >
             {REELS.map((reel, i) => (
-              <div key={i} className="w-full h-full shrink-0 relative">
+              <div key={i} className="absolute left-0 right-0 h-full" style={{ top: `${i * 100}%` }}>
                 <ReelItem
                   reel={reel}
                   isActive={i === activeIdx}
@@ -183,14 +183,36 @@ const ReelsModal = ({ onClose }: { onClose: () => void }) => {
             ))}
           </motion.div>
 
+          {/* Right-side dots indicator */}
+          <div className="absolute right-1.5 top-1/2 -translate-y-1/2 z-30 flex flex-col gap-1.5 pointer-events-none">
+            {REELS.map((_, i) => (
+              <div
+                key={i}
+                className={`w-1 rounded-full transition-all ${i === activeIdx ? "bg-white h-6" : "bg-white/40 h-2"}`}
+              />
+            ))}
+          </div>
+
+          {/* Next reel CTA */}
           {activeIdx < REELS.length - 1 && (
-            <motion.div
-              className="absolute bottom-2 left-1/2 -translate-x-1/2 z-30 text-white/60 text-[10px] flex flex-col items-center gap-1 pointer-events-none"
-              animate={{ y: [0, -6, 0] }}
-              transition={{ duration: 1.5, repeat: Infinity }}
+            <motion.button
+              onClick={() => setActiveIdx(activeIdx + 1)}
+              className="absolute bottom-3 left-1/2 -translate-x-1/2 z-30 flex flex-col items-center gap-1 px-3 py-1.5 rounded-full bg-white/15 backdrop-blur-md border border-white/20"
+              animate={{ y: [0, -5, 0] }}
+              transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
             >
-              <span>↑ Desliza</span>
-            </motion.div>
+              <span className="text-white text-[10px] font-medium tracking-wide flex items-center gap-1">
+                <ChevronUp className="w-3 h-3" /> Desliza para el siguiente reel
+              </span>
+            </motion.button>
+          )}
+          {activeIdx > 0 && (
+            <button
+              onClick={() => setActiveIdx(activeIdx - 1)}
+              className="absolute top-14 left-1/2 -translate-x-1/2 z-30 flex items-center gap-1 px-2.5 py-1 rounded-full bg-white/15 backdrop-blur-md border border-white/20 text-white text-[10px]"
+            >
+              <ChevronUp className="w-3 h-3 rotate-180" /> Reel anterior
+            </button>
           )}
         </div>
 

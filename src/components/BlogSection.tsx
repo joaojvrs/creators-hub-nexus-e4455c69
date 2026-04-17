@@ -60,87 +60,91 @@ const BlogSection = () => {
         <div className="grid lg:grid-cols-5 gap-6">
           {/* Featured Post - Large */}
           <motion.article
-            className="lg:col-span-3 group cursor-pointer rounded-2xl border border-border/50 bg-card overflow-hidden hover:border-primary/30 transition-colors duration-500"
+            className="lg:col-span-3 group rounded-2xl border border-border/50 bg-card overflow-hidden hover:border-primary/30 transition-colors duration-500"
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <div className="relative h-64 md:h-72 overflow-hidden">
-              <img
-                src={posts[0].image}
-                alt={posts[0].title}
-                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                loading="lazy"
-                width={800}
-                height={512}
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-card via-card/20 to-transparent" />
-              <div className="absolute top-4 left-4">
-                <span className="inline-flex items-center gap-1 text-[10px] tracking-wider uppercase font-heading bg-primary text-primary-foreground px-2.5 py-1 rounded-full">
-                  <Tag className="w-2.5 h-2.5" />
-                  {posts[0].tag}
-                </span>
+            <Link to={`/blog/${posts[0].slug}`} className="block cursor-pointer">
+              <div className="relative h-64 md:h-72 overflow-hidden">
+                <img
+                  src={posts[0].image}
+                  alt={posts[0].title}
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  loading="lazy"
+                  width={800}
+                  height={512}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-card via-card/20 to-transparent" />
+                <div className="absolute top-4 left-4">
+                  <span className="inline-flex items-center gap-1 text-[10px] tracking-wider uppercase font-heading bg-primary text-primary-foreground px-2.5 py-1 rounded-full">
+                    <Tag className="w-2.5 h-2.5" />
+                    {posts[0].tag}
+                  </span>
+                </div>
               </div>
-            </div>
-            <div className="p-6">
-              <div className="flex items-center gap-3 text-muted-foreground text-xs mb-3">
-                <span>{posts[0].date}</span>
-                <span>·</span>
-                <span className="flex items-center gap-1">
-                  <Clock className="w-3 h-3" />
-                  {posts[0].readTime}
-                </span>
+              <div className="p-6">
+                <div className="flex items-center gap-3 text-muted-foreground text-xs mb-3">
+                  <span>{posts[0].date}</span>
+                  <span>·</span>
+                  <span className="flex items-center gap-1">
+                    <Clock className="w-3 h-3" />
+                    {posts[0].readTime}
+                  </span>
+                </div>
+                <h3 className="font-heading text-xl md:text-2xl font-bold leading-tight mb-3 group-hover:text-primary transition-colors duration-400">
+                  {posts[0].title}
+                </h3>
+                <p className="text-muted-foreground text-sm leading-relaxed line-clamp-2">
+                  {posts[0].excerpt}
+                </p>
               </div>
-              <h3 className="font-heading text-xl md:text-2xl font-bold leading-tight mb-3 group-hover:text-primary transition-colors duration-400">
-                {posts[0].title}
-              </h3>
-              <p className="text-muted-foreground text-sm leading-relaxed line-clamp-2">
-                {posts[0].excerpt}
-              </p>
-            </div>
+            </Link>
           </motion.article>
 
           {/* Side Posts Stack */}
           <div className="lg:col-span-2 flex flex-col gap-5">
             {posts.slice(1).map((post, i) => (
               <motion.article
-                key={post.title}
-                className="group cursor-pointer rounded-2xl border border-border/50 bg-card overflow-hidden hover:border-primary/30 transition-all duration-500 flex flex-row"
+                key={post.slug}
+                className="group rounded-2xl border border-border/50 bg-card overflow-hidden hover:border-primary/30 transition-all duration-500"
                 initial={{ opacity: 0, x: 30 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: i * 0.1 }}
               >
-                {/* Thumbnail */}
-                <div className="relative w-28 md:w-32 shrink-0 overflow-hidden">
-                  <img
-                    src={post.image}
-                    alt={post.title}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                    loading="lazy"
-                    width={800}
-                    height={512}
-                  />
-                </div>
-                {/* Content */}
-                <div className="p-4 flex flex-col justify-center min-w-0">
-                  <div className="flex items-center gap-2 mb-2">
-                    <span className="text-[10px] tracking-wider uppercase font-heading text-primary flex items-center gap-1">
-                      <Tag className="w-2 h-2" />
-                      {post.tag}
-                    </span>
-                    <span className="text-muted-foreground text-[10px]">·</span>
-                    <span className="text-muted-foreground text-[10px] flex items-center gap-0.5">
-                      <Clock className="w-2 h-2" />
-                      {post.readTime}
-                    </span>
+                <Link to={`/blog/${post.slug}`} className="flex flex-row cursor-pointer">
+                  {/* Thumbnail */}
+                  <div className="relative w-28 md:w-32 shrink-0 overflow-hidden">
+                    <img
+                      src={post.image}
+                      alt={post.title}
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                      loading="lazy"
+                      width={800}
+                      height={512}
+                    />
                   </div>
-                  <h3 className="font-heading text-sm font-semibold leading-snug group-hover:text-primary transition-colors duration-400 line-clamp-2">
-                    {post.title}
-                  </h3>
-                  <span className="text-muted-foreground text-[10px] mt-1.5">{post.date}</span>
-                </div>
+                  {/* Content */}
+                  <div className="p-4 flex flex-col justify-center min-w-0">
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="text-[10px] tracking-wider uppercase font-heading text-primary flex items-center gap-1">
+                        <Tag className="w-2 h-2" />
+                        {post.tag}
+                      </span>
+                      <span className="text-muted-foreground text-[10px]">·</span>
+                      <span className="text-muted-foreground text-[10px] flex items-center gap-0.5">
+                        <Clock className="w-2 h-2" />
+                        {post.readTime}
+                      </span>
+                    </div>
+                    <h3 className="font-heading text-sm font-semibold leading-snug group-hover:text-primary transition-colors duration-400 line-clamp-2">
+                      {post.title}
+                    </h3>
+                    <span className="text-muted-foreground text-[10px] mt-1.5">{post.date}</span>
+                  </div>
+                </Link>
               </motion.article>
             ))}
           </div>

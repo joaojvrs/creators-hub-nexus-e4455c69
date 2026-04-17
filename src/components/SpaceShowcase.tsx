@@ -1,5 +1,5 @@
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
-import { useRef, useState, lazy, Suspense } from "react";
+import { useRef, useState, useEffect, lazy, Suspense } from "react";
 import { Play, Volume2, VolumeX } from "lucide-react";
 import studioOnair from "@/assets/studio-onair.webp";
 import spaceMeeting from "@/assets/space-meeting.webp";
@@ -13,9 +13,16 @@ const REEL_SRC = "/media/creators-reel.mp4";
 const REEL_POSTER = "/media/creators-reel-poster.jpg";
 
 /* ── Video Thumbnail ── */
-const VideoPlayer = ({ onOpenReel }: { onOpenReel: () => void }) => {
+const VideoPlayer = ({ onOpenReel, paused }: { onOpenReel: () => void; paused: boolean }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [muted, setMuted] = useState(true);
+
+  useEffect(() => {
+    const v = videoRef.current;
+    if (!v) return;
+    if (paused) v.pause();
+    else v.play().catch(() => {});
+  }, [paused]);
 
   const toggleMute = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -143,7 +150,7 @@ const SpaceShowcase = () => {
 
         <div className="grid grid-cols-12 gap-4 md:gap-6 mb-6">
           <div className="col-span-12 md:col-span-4 lg:col-span-3 flex justify-center">
-            <VideoPlayer onOpenReel={() => setReelOpen(true)} />
+            <VideoPlayer onOpenReel={() => setReelOpen(true)} paused={reelOpen} />
           </div>
 
           <div className="col-span-12 md:col-span-8 lg:col-span-9 grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">

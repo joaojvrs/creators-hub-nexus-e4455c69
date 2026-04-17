@@ -1,6 +1,7 @@
 import { motion, useScroll, useTransform, useMotionValue, useSpring } from "framer-motion";
 import { Camera, ShoppingBag, Globe, Users, ArrowUpRight } from "lucide-react";
 import { useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import TextReveal from "./TextReveal";
 import tiktokShopLogo from "@/assets/tiktok-shop-logo.png";
 import instagramShopLogo from "@/assets/instagram-shop-logo.png";
@@ -12,6 +13,7 @@ type Pillar = {
   description: string;
   number: string;
   gradient: string;
+  slug: string;
   logos?: { src: string; alt: string }[];
 };
 
@@ -24,6 +26,7 @@ const pillars: Pillar[] = [
       "Estudio audiovisual profesional para podcast, reels, anuncios, streaming y producción de contenido de alta calidad.",
     number: "01",
     gradient: "from-primary/20 to-primary/5",
+    slug: "creators-studio",
   },
   {
     icon: ShoppingBag,
@@ -33,6 +36,7 @@ const pillars: Pillar[] = [
       "Tienda física conectada a TikTok Shop e Instagram Shop. Showroom de productos virales con demostraciones en vivo.",
     number: "02",
     gradient: "from-primary/15 to-primary/5",
+    slug: "creators-shop",
     logos: [
       { src: tiktokShopLogo, alt: "TikTok Shop" },
       { src: instagramShopLogo, alt: "Instagram Shop" },
@@ -46,6 +50,7 @@ const pillars: Pillar[] = [
       "Plataforma digital con productos propios, afiliación de creadores, dropshipping y suscripción de packs exclusivos.",
     number: "03",
     gradient: "from-primary/20 to-primary/5",
+    slug: "marketplace",
   },
   {
     icon: Users,
@@ -55,6 +60,7 @@ const pillars: Pillar[] = [
       "Comunidad de membresía con acceso al estudio, formación, networking, oportunidades con marcas y visibilidad.",
     number: "04",
     gradient: "from-primary/15 to-primary/5",
+    slug: "creators-club",
   },
 ];
 
@@ -92,6 +98,7 @@ const PillarCard = ({ pillar, index }: { pillar: Pillar; index: number }) => {
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={handleMouseLeave}
     >
+      <Link to={`/pilar/${pillar.slug}`} className="block h-full" aria-label={`Ver detalle ${pillar.title}`}>
       <motion.div
         className="relative h-full rounded-2xl border border-border/50 bg-card/50 backdrop-blur-sm p-7 md:p-8 overflow-hidden transition-colors duration-500 group-hover:border-primary/30"
         style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
@@ -174,6 +181,7 @@ const PillarCard = ({ pillar, index }: { pillar: Pillar; index: number }) => {
           )}
         </div>
       </motion.div>
+      </Link>
     </motion.div>
   );
 };

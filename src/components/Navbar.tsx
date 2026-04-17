@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import MagneticButton from "./MagneticButton";
 import ThemeToggle from "./ThemeToggle";
 import { useTheme } from "@/hooks/useTheme";
@@ -19,12 +20,27 @@ const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const { theme, toggleTheme } = useTheme();
   const logo = theme === "dark" ? creatorsLogoWhite : creatorsLogoBlack;
+  const location = useLocation();
+  const navigate = useNavigate();
+  const isHome = location.pathname === "/";
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 60);
-    window.addEventListener("scroll", onScroll);
+    window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  // Anchor links: from non-home, route to /#anchor; from home, plain hash
+  const anchorHref = (hash: string) => (isHome ? hash : `/${hash}`);
+
+  const handleLogoClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (isHome) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } else {
+      navigate("/");
+    }
+  };
 
   return (
     <motion.nav
@@ -38,9 +54,9 @@ const Navbar = () => {
       transition={{ duration: 0.8, ease: [0.215, 0.61, 0.355, 1] }}
     >
       <div className="container mx-auto px-6 flex items-center justify-between h-16">
-        <MagneticButton href="#" strength={0.2} className="flex items-center">
+        <Link to="/" onClick={handleLogoClick} className="flex items-center" aria-label="Volver al inicio">
           <img src={logo} alt="Creators Hub Club" className="h-5 md:h-6 w-auto" />
-        </MagneticButton>
+        </Link>
 
         {/* Desktop links */}
         <div className="hidden md:flex items-center gap-8">

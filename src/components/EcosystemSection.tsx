@@ -13,6 +13,7 @@ type Pillar = {
   description: string;
   number: string;
   gradient: string;
+  slug: string;
   logos?: { src: string; alt: string }[];
 };
 
@@ -25,6 +26,7 @@ const pillars: Pillar[] = [
       "Estudio audiovisual profesional para podcast, reels, anuncios, streaming y producción de contenido de alta calidad.",
     number: "01",
     gradient: "from-primary/20 to-primary/5",
+    slug: "creators-studio",
   },
   {
     icon: ShoppingBag,
@@ -34,6 +36,7 @@ const pillars: Pillar[] = [
       "Tienda física conectada a TikTok Shop e Instagram Shop. Showroom de productos virales con demostraciones en vivo.",
     number: "02",
     gradient: "from-primary/15 to-primary/5",
+    slug: "creators-shop",
     logos: [
       { src: tiktokShopLogo, alt: "TikTok Shop" },
       { src: instagramShopLogo, alt: "Instagram Shop" },
@@ -47,6 +50,7 @@ const pillars: Pillar[] = [
       "Plataforma digital con productos propios, afiliación de creadores, dropshipping y suscripción de packs exclusivos.",
     number: "03",
     gradient: "from-primary/20 to-primary/5",
+    slug: "marketplace",
   },
   {
     icon: Users,
@@ -56,6 +60,7 @@ const pillars: Pillar[] = [
       "Comunidad de membresía con acceso al estudio, formación, networking, oportunidades con marcas y visibilidad.",
     number: "04",
     gradient: "from-primary/15 to-primary/5",
+    slug: "creators-club",
   },
 ];
 

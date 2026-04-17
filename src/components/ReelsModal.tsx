@@ -1,21 +1,52 @@
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, PanInfo } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
-import { VolumeX, Heart, MessageCircle, Send, Bookmark, X, MoreHorizontal } from "lucide-react";
+import { VolumeX, Volume2, Heart, MessageCircle, Send, Bookmark, X, MoreHorizontal } from "lucide-react";
 import creatorsLogo from "@/assets/creators-logo-white.png";
 
-const REEL_SRC = "/media/creators-reel.mp4";
-const REEL_POSTER = "/media/creators-reel-poster.jpg";
+const REELS = [
+  {
+    src: "/media/creators-reel.mp4",
+    poster: "/media/creators-reel-poster.jpg",
+    caption: "Nuestro espacio en Barcelona 🎬✨ Estudio, showroom, coworking y más.",
+    tags: "#CreatorsHubClub #Barcelona #ContentCreator",
+    likes: "2.4k",
+    comments: "128",
+  },
+  {
+    src: "/media/creators-reel-2.mp4",
+    poster: "/media/creators-reel-2-poster.jpg",
+    caption: "Donde las ideas se convierten en contenido real 🚀",
+    tags: "#Creators #RRSS #BCN",
+    likes: "1.8k",
+    comments: "92",
+  },
+];
 
-const ReelsModal = ({ onClose }: { onClose: () => void }) => {
+const ReelItem = ({
+  reel,
+  isActive,
+  isMuted,
+  onToggleMute,
+}: {
+  reel: typeof REELS[number];
+  isActive: boolean;
+  isMuted: boolean;
+  onToggleMute: () => void;
+}) => {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [isMuted, setIsMuted] = useState(false);
   const [liked, setLiked] = useState(false);
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    document.body.style.overflow = "hidden";
-    return () => { document.body.style.overflow = ""; };
-  }, []);
+    const v = videoRef.current;
+    if (!v) return;
+    if (isActive) {
+      v.currentTime = 0;
+      v.play().catch(() => {});
+    } else {
+      v.pause();
+    }
+  }, [isActive]);
 
   useEffect(() => {
     const v = videoRef.current;
@@ -24,6 +55,81 @@ const ReelsModal = ({ onClose }: { onClose: () => void }) => {
     v.addEventListener("timeupdate", update);
     return () => v.removeEventListener("timeupdate", update);
   }, []);
+
+  return (
+    <div className="relative w-full h-full snap-start shrink-0">
+      <video
+        ref={videoRef}
+        src={reel.src}
+        poster={reel.poster}
+        className="absolute inset-0 w-full h-full object-cover"
+        loop
+        playsInline
+        muted={isMuted}
+        preload={isActive ? "auto" : "metadata"}
+      />
+      <div className="absolute top-0 left-0 right-0 h-[2px] bg-white/20 z-20">
+        <div className="h-full bg-white" style={{ width: `${progress}%` }} />
+      </div>
+
+      <div className="absolute right-3 bottom-24 flex flex-col items-center gap-5 z-20">
+        <button onClick={() => setLiked(!liked)} className="flex flex-col items-center gap-1">
+          <Heart className={`w-7 h-7 ${liked ? "fill-red-500 text-red-500" : "text-white"} transition-colors`} />
+          <span className="text-white text-[10px]">{reel.likes}</span>
+        </button>
+        <button className="flex flex-col items-center gap-1">
+          <MessageCircle className="w-7 h-7 text-white" />
+          <span className="text-white text-[10px]">{reel.comments}</span>
+        </button>
+        <button className="flex flex-col items-center gap-1">
+          <Send className="w-7 h-7 text-white" />
+          <span className="text-white text-[10px]">Share</span>
+        </button>
+        <button><Bookmark className="w-7 h-7 text-white" /></button>
+        <button><MoreHorizontal className="w-7 h-7 text-white" /></button>
+        <div className="w-8 h-8 rounded-lg border-2 border-white overflow-hidden bg-primary flex items-center justify-center">
+          <img src={creatorsLogo} alt="Creators" className="w-6 h-auto" />
+        </div>
+      </div>
+
+      <div className="absolute bottom-6 left-3 right-14 z-20">
+        <div className="flex items-center gap-2 mb-2">
+          <div className="w-8 h-8 rounded-full bg-primary/80 flex items-center justify-center overflow-hidden">
+            <img src={creatorsLogo} alt="Creators" className="w-5 h-auto" />
+          </div>
+          <span className="text-white text-sm font-semibold">creatorshubclub</span>
+          <span className="text-white/50 text-xs">• Seguir</span>
+        </div>
+        <p className="text-white text-xs leading-relaxed">
+          {reel.caption}
+          <span className="text-white/50"> {reel.tags}</span>
+        </p>
+      </div>
+
+      <button
+        onClick={(e) => { e.stopPropagation(); onToggleMute(); }}
+        className="absolute top-16 right-3 z-20 w-9 h-9 rounded-full bg-black/40 backdrop-blur-md flex items-center justify-center"
+      >
+        {isMuted ? <VolumeX className="w-4 h-4 text-white" /> : <Volume2 className="w-4 h-4 text-white" />}
+      </button>
+    </div>
+  );
+};
+
+const ReelsModal = ({ onClose }: { onClose: () => void }) => {
+  const [isMuted, setIsMuted] = useState(false);
+  const [activeIdx, setActiveIdx] = useState(0);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    return () => { document.body.style.overflow = ""; };
+  }, []);
+
+  const handleDragEnd = (_: unknown, info: PanInfo) => {
+    if (info.offset.y < -60 && activeIdx < REELS.length - 1) setActiveIdx(activeIdx + 1);
+    else if (info.offset.y > 60 && activeIdx > 0) setActiveIdx(activeIdx - 1);
+  };
 
   return (
     <motion.div
@@ -44,10 +150,8 @@ const ReelsModal = ({ onClose }: { onClose: () => void }) => {
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-28 h-6 bg-black rounded-b-2xl z-30" />
         <div className="relative z-20 flex items-center justify-between px-6 pt-2 pb-1 text-[10px] text-white/70 font-medium">
           <span>9:41</span>
-          <div className="flex items-center gap-1">
-            <div className="w-4 h-2.5 border border-white/50 rounded-sm relative">
-              <div className="absolute inset-[1px] right-[2px] bg-white/70 rounded-[1px]" />
-            </div>
+          <div className="w-4 h-2.5 border border-white/50 rounded-sm relative">
+            <div className="absolute inset-[1px] right-[2px] bg-white/70 rounded-[1px]" />
           </div>
         </div>
         <div className="relative z-20 flex items-center justify-between px-4 py-2">
@@ -56,77 +160,40 @@ const ReelsModal = ({ onClose }: { onClose: () => void }) => {
             <X className="w-6 h-6" />
           </button>
         </div>
-        <div className="flex-1 relative">
-          <video
-            ref={videoRef}
-            src={REEL_SRC}
-            poster={REEL_POSTER}
-            className="absolute inset-0 w-full h-full object-cover"
-            autoPlay
-            loop
-            playsInline
-            muted={isMuted}
-            preload="auto"
-          />
-          <div className="absolute top-0 left-0 right-0 h-[2px] bg-white/20 z-20">
-            <motion.div className="h-full bg-white" style={{ width: `${progress}%` }} />
-          </div>
-          <div className="absolute right-3 bottom-20 flex flex-col items-center gap-5 z-20">
-            <button onClick={() => setLiked(!liked)} className="flex flex-col items-center gap-1">
-              <Heart className={`w-7 h-7 ${liked ? "fill-red-500 text-red-500" : "text-white"} transition-colors`} />
-              <span className="text-white text-[10px]">2.4k</span>
-            </button>
-            <button className="flex flex-col items-center gap-1">
-              <MessageCircle className="w-7 h-7 text-white" />
-              <span className="text-white text-[10px]">128</span>
-            </button>
-            <button className="flex flex-col items-center gap-1">
-              <Send className="w-7 h-7 text-white" />
-              <span className="text-white text-[10px]">Share</span>
-            </button>
-            <button><Bookmark className="w-7 h-7 text-white" /></button>
-            <button><MoreHorizontal className="w-7 h-7 text-white" /></button>
-            <div className="w-8 h-8 rounded-lg border-2 border-white overflow-hidden bg-primary flex items-center justify-center">
-              <img src={creatorsLogo} alt="Creators" className="w-6 h-auto" />
-            </div>
-          </div>
-          <div className="absolute bottom-3 left-3 right-14 z-20">
-            <div className="flex items-center gap-2 mb-2">
-              <div className="w-8 h-8 rounded-full bg-primary/80 flex items-center justify-center overflow-hidden">
-                <img src={creatorsLogo} alt="Creators" className="w-5 h-auto" />
-              </div>
-              <span className="text-white text-sm font-semibold">creatorshubclub</span>
-              <span className="text-white/50 text-xs">• Seguir</span>
-            </div>
-            <p className="text-white text-xs leading-relaxed">
-              Nuestro espacio en Barcelona 🎬✨ Estudio, showroom, coworking y más.
-              <span className="text-white/50"> #CreatorsHubClub #Barcelona #ContentCreator</span>
-            </p>
-            <div className="flex items-center gap-2 mt-2">
-              <div className="flex items-center gap-1.5 bg-white/10 rounded-full px-2.5 py-1">
-                <div className="w-3 h-3 rounded-full bg-white/60 animate-pulse" />
-                <span className="text-white/70 text-[10px]">Original Audio</span>
-              </div>
-            </div>
-          </div>
-          <button
-            onClick={() => setIsMuted(!isMuted)}
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20"
+
+        <div ref={containerRef} className="flex-1 relative overflow-hidden">
+          <motion.div
+            className="absolute inset-0 flex flex-col"
+            animate={{ y: `-${activeIdx * 100}%` }}
+            transition={{ type: "spring", damping: 30, stiffness: 200 }}
+            drag="y"
+            dragConstraints={{ top: 0, bottom: 0 }}
+            dragElastic={0.2}
+            onDragEnd={handleDragEnd}
           >
-            <AnimatePresence>
-              {isMuted && (
-                <motion.div
-                  className="w-12 h-12 rounded-full bg-black/50 flex items-center justify-center"
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  exit={{ scale: 0 }}
-                >
-                  <VolumeX className="w-5 h-5 text-white" />
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </button>
+            {REELS.map((reel, i) => (
+              <div key={i} className="w-full h-full shrink-0 relative">
+                <ReelItem
+                  reel={reel}
+                  isActive={i === activeIdx}
+                  isMuted={isMuted}
+                  onToggleMute={() => setIsMuted(!isMuted)}
+                />
+              </div>
+            ))}
+          </motion.div>
+
+          {activeIdx < REELS.length - 1 && (
+            <motion.div
+              className="absolute bottom-2 left-1/2 -translate-x-1/2 z-30 text-white/60 text-[10px] flex flex-col items-center gap-1 pointer-events-none"
+              animate={{ y: [0, -6, 0] }}
+              transition={{ duration: 1.5, repeat: Infinity }}
+            >
+              <span>↑ Desliza</span>
+            </motion.div>
+          )}
         </div>
+
         <div className="relative z-20 flex items-center justify-around py-2 pb-4 bg-black border-t border-white/10">
           {["🏠", "🔍", "➕", "🎬", "👤"].map((icon, i) => (
             <span key={i} className={`text-lg ${i === 3 ? "opacity-100" : "opacity-40"}`}>{icon}</span>

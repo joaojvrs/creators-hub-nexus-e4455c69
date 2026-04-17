@@ -1,10 +1,10 @@
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { useRef, useState, lazy, Suspense } from "react";
 import { Play, Volume2, VolumeX } from "lucide-react";
-import studioOnair from "@/assets/studio-onair.png";
-import spaceMeeting from "@/assets/space-meeting.jpg";
-import spaceFront from "@/assets/space-front.jpg";
-import spaceCowork from "@/assets/space-cowork.jpg";
+import studioOnair from "@/assets/studio-onair.webp";
+import spaceMeeting from "@/assets/space-meeting.webp";
+import spaceFront from "@/assets/space-front.webp";
+import spaceCowork from "@/assets/space-cowork.webp";
 import TextReveal from "./TextReveal";
 
 const ReelsModal = lazy(() => import("./ReelsModal"));

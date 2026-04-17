@@ -129,7 +129,7 @@ const Navbar = () => {
               {links.map((link, i) => (
                 <motion.a
                   key={link.href}
-                  href={link.href}
+                  href={anchorHref(link.href)}
                   onClick={() => setMenuOpen(false)}
                   className="text-foreground font-heading text-sm py-2 border-b border-border/30"
                   initial={{ opacity: 0, x: -20 }}
@@ -140,7 +140,7 @@ const Navbar = () => {
                 </motion.a>
               ))}
               <motion.a
-                href="#contacto"
+                href={anchorHref("#contacto")}
                 onClick={() => setMenuOpen(false)}
                 className="inline-flex items-center justify-center px-5 py-3 bg-primary text-primary-foreground font-heading font-semibold text-sm rounded-full mt-2"
                 initial={{ opacity: 0, y: 10 }}

@@ -140,6 +140,8 @@ const HeroSection = () => {
           className="w-full h-full object-cover"
           width={1920}
           height={1080}
+          fetchPriority="high"
+          decoding="async"
         />
       </motion.div>
 
@@ -150,8 +152,8 @@ const HeroSection = () => {
 
       {/* Floating particles */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none z-10">
-        {Array.from({ length: 12 }).map((_, i) => (
-          <FloatingParticle key={i} delay={i * 0.6} />
+        {Array.from({ length: 6 }).map((_, i) => (
+          <FloatingParticle key={i} delay={i * 1.2} />
         ))}
       </div>
 

@@ -2,6 +2,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import TextReveal from "./TextReveal";
 import AnimatedCounter from "./AnimatedCounter";
+import FloatingReactions from "./FloatingReactions";
 import creatorPhone from "@/assets/creator-phone.webp";
 
 const stats = [
@@ -117,8 +118,9 @@ const ValueSection = () => {
               transition={{ duration: 0.6 }}
             />
             <div className="absolute inset-0 bg-gradient-to-t from-background/50 via-transparent to-transparent" />
+            <FloatingReactions />
             <motion.div
-              className="absolute bottom-6 left-6"
+              className="absolute bottom-6 left-6 z-30"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}

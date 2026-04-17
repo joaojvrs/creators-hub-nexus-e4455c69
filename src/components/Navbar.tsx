@@ -68,7 +68,7 @@ const Navbar = () => {
               transition={{ delay: 0.3 + i * 0.08 }}
             >
               <MagneticButton
-                href={link.href}
+                href={anchorHref(link.href)}
                 strength={0.25}
                 className="text-muted-foreground text-xs tracking-widest uppercase font-heading hover:text-primary transition-colors"
               >
@@ -92,7 +92,7 @@ const Navbar = () => {
             transition={{ delay: 0.7 }}
           >
             <MagneticButton
-              href="#contacto"
+              href={anchorHref("#contacto")}
               strength={0.3}
               className="inline-flex items-center px-5 py-2 bg-primary text-primary-foreground font-heading font-semibold text-xs rounded-full hover:brightness-110 transition-all hover:shadow-[0_0_30px_hsl(160_72%_50%/0.3)]"
             >

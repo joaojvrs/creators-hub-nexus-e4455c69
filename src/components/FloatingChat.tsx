@@ -42,6 +42,12 @@ const FloatingChat = () => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
   }, [messages, isTyping]);
 
+  useEffect(() => {
+    const open = () => setIsOpen(true);
+    window.addEventListener("open-ai-chat", open);
+    return () => window.removeEventListener("open-ai-chat", open);
+  }, []);
+
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     if (!loginName.trim() || !loginEmail.trim()) return;

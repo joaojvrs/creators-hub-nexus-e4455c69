@@ -1,6 +1,6 @@
 import { motion, useScroll, useTransform, useMotionValue, useSpring } from "framer-motion";
 import { useRef, useEffect, useState } from "react";
-import studioImg from "@/assets/studio-onair.png";
+import studioImg from "@/assets/studio-onair.webp";
 import creatorsLogoWhite from "@/assets/creators-logo-white.png";
 import creatorsLogoBlack from "@/assets/creators-logo-black.png";
 import MagneticButton from "./MagneticButton";
@@ -209,13 +209,12 @@ const HeroSection = () => {
             >
               Agendar Visita
             </MagneticButton>
-            <MagneticButton
-              href="#asistente"
-              strength={0.4}
+            <button
+              onClick={() => window.dispatchEvent(new CustomEvent("open-ai-chat"))}
               className="inline-flex items-center justify-center px-7 py-3.5 border border-glow text-primary font-heading font-semibold text-sm rounded-full hover:bg-primary/10 transition-all duration-300"
             >
               Hablar con IA
-            </MagneticButton>
+            </button>
           </motion.div>
         </div>
       </motion.div>

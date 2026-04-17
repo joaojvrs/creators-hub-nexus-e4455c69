@@ -2,7 +2,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import TextReveal from "./TextReveal";
 import AnimatedCounter from "./AnimatedCounter";
-import creatorPhone from "@/assets/creator-phone.jpg";
+import creatorPhone from "@/assets/creator-phone.webp";
 
 const stats = [
   { value: "250B+", label: "Creator Economy", description: "Mercado global en plena explosión" },

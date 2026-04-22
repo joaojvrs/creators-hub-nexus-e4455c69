@@ -1,5 +1,5 @@
 import { motion, useScroll, useTransform, useMotionValue, useSpring } from "framer-motion";
-import { Camera, ShoppingBag, Globe, Users, ArrowUpRight } from "lucide-react";
+import { Camera, ShoppingBag, Globe, Users, GraduationCap, ArrowUpRight } from "lucide-react";
 import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import TextReveal from "./TextReveal";
@@ -19,21 +19,21 @@ type Pillar = {
 
 const pillars: Pillar[] = [
   {
-    icon: Camera,
-    title: "Creators Studio",
-    subtitle: "Producción",
+    icon: GraduationCap,
+    title: "Creators Lab",
+    subtitle: "Formación",
     description:
-      "Estudio audiovisual profesional para podcast, reels, anuncios, streaming y producción de contenido de alta calidad.",
+      "Viral & Sell School. Aprende desde cero a crear contenido que crece, conecta y vende. Escuela gratuita + comunidad.",
     number: "01",
     gradient: "from-primary/20 to-primary/5",
-    slug: "creators-studio",
+    slug: "creators-lab",
   },
   {
     icon: ShoppingBag,
     title: "Creators Shop",
     subtitle: "Comercio",
     description:
-      "Tienda física conectada a TikTok Shop e Instagram Shop. Showroom de productos virales con demostraciones en vivo.",
+      "Tienda física abierta al público. Showroom de productos virales, demostraciones en directo y escaparate del marketplace.",
     number: "02",
     gradient: "from-primary/15 to-primary/5",
     slug: "creators-shop",
@@ -44,22 +44,32 @@ const pillars: Pillar[] = [
   },
   {
     icon: Globe,
-    title: "Marketplace",
+    title: "Creators Hub Marketplace",
     subtitle: "Digital",
     description:
-      "Plataforma digital con productos propios, afiliación de creadores, dropshipping y suscripción de packs exclusivos.",
+      "Productos propios, afiliación, dropshipping, packs y lives conectados a TikTok Shop e Instagram Shop. Comisiones 15-30%.",
     number: "03",
     gradient: "from-primary/20 to-primary/5",
     slug: "marketplace",
+  },
+  {
+    icon: Camera,
+    title: "Creators Studio",
+    subtitle: "Producción",
+    description:
+      "Estudio audiovisual profesional. Podcast, reels, anuncios, streaming, sets para marcas y producción. Desde 85€/hora.",
+    number: "04",
+    gradient: "from-primary/15 to-primary/5",
+    slug: "creators-studio",
   },
   {
     icon: Users,
     title: "Creators Club",
     subtitle: "Comunidad",
     description:
-      "Comunidad de membresía con acceso al estudio, formación, networking, oportunidades con marcas y visibilidad.",
-    number: "04",
-    gradient: "from-primary/15 to-primary/5",
+      "Membresía con acceso al estudio, formación, networking, oportunidades con marcas y visibilidad.",
+    number: "05",
+    gradient: "from-primary/20 to-primary/5",
     slug: "creators-club",
   },
 ];
@@ -226,7 +236,7 @@ const EcosystemSection = () => {
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
             <div className="max-w-2xl">
               <TextReveal className="font-heading text-3xl md:text-5xl lg:text-6xl font-bold leading-[0.95] block" as="h2">
-                Cuatro pilares, un solo objetivo
+                Cinco pilares, un solo objetivo
               </TextReveal>
             </div>
             <motion.p

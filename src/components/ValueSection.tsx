@@ -67,9 +67,9 @@ const ValueSection = () => {
                 viewport={{ once: true }}
                 transition={{ duration: 0.7, delay: 0.3 }}
               >
-                Ayudamos a creadores a generar contenido que venda. Desde un joven creador 
-                hasta un emprendedor — cualquier persona puede generar ingresos con el poder 
-                de las redes sociales.
+                Ayudamos a creadores y marcas a hacer contenido y vender en TikTok e Instagram. 
+                Te enseñamos a crear contenido que venda y genere más de 3.000€ al mes — desde 
+                un joven creador hasta un emprendedor consolidado.
               </motion.p>
             </motion.div>
 

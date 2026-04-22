@@ -192,7 +192,7 @@ const HeroSection = () => {
               style={{ transformOrigin: "left" }}
             />
             <p className="text-muted-foreground text-base md:text-lg font-body max-w-md">
-              El ecosistema donde el contenido se convierte en ventas y comunidad.
+              El ecosistema que convierte contenido en ventas y comunidad. Crea. Influye. Vende.
             </p>
           </motion.div>
 

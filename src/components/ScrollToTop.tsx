@@ -2,14 +2,33 @@ import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
 /**
- * Scrolls the window to the top whenever the route pathname changes.
- * Uses 'instant' to avoid jarring animation between page transitions.
+ * Scrolls to the top on every route change.
+ * Uses multiple strategies + rAF to defeat smooth-scroll libraries (Lenis)
+ * and browser scroll restoration.
  */
 const ScrollToTop = () => {
   const { pathname } = useLocation();
 
   useEffect(() => {
-    window.scrollTo({ top: 0, left: 0, behavior: "instant" as ScrollBehavior });
+    if ("scrollRestoration" in window.history) {
+      window.history.scrollRestoration = "manual";
+    }
+
+    const reset = () => {
+      window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+    };
+
+    reset();
+    // Run again after the next paint to override Lenis or layout shifts
+    const r1 = requestAnimationFrame(() => {
+      reset();
+      const r2 = requestAnimationFrame(reset);
+      (reset as unknown as { _r2?: number })._r2 = r2;
+    });
+
+    return () => cancelAnimationFrame(r1);
   }, [pathname]);
 
   return null;

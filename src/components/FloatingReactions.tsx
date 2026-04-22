@@ -55,11 +55,11 @@ const FloatingReactions = () => {
         size: 18 + Math.random() * 16,
         drift: (Math.random() - 0.5) * 60,
       };
-      setReactions((prev) => [...prev.slice(-10), r]);
+      setReactions((prev) => [...prev.slice(-6), r]);
     };
 
-    for (let i = 0; i < 3; i++) setTimeout(spawn, i * 350);
-    const interval = setInterval(spawn, 900);
+    for (let i = 0; i < 3; i++) setTimeout(spawn, i * 500);
+    const interval = setInterval(spawn, 1600);
     return () => clearInterval(interval);
   }, [isVisible]);
 
@@ -87,7 +87,7 @@ const FloatingReactions = () => {
           >
             {Icon ? (
               <div
-                className="flex items-center justify-center rounded-full bg-background/80 backdrop-blur-md border border-primary/30 shadow-lg shadow-primary/20"
+                className="flex items-center justify-center rounded-full bg-background/90 border border-primary/30 shadow-lg shadow-primary/20"
                 style={{ width: r.size + 16, height: r.size + 16 }}
               >
                 <Icon

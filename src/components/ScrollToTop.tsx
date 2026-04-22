@@ -14,21 +14,14 @@ const ScrollToTop = () => {
       window.history.scrollRestoration = "manual";
     }
 
-    const reset = () => {
-      window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+    // setTimeout(0) ensures this runs after Lenis cleanup (which fires during unmount)
+    const timer = setTimeout(() => {
+      window.scrollTo(0, 0);
       document.documentElement.scrollTop = 0;
       document.body.scrollTop = 0;
-    };
+    }, 0);
 
-    reset();
-    // Run again after the next paint to override Lenis or layout shifts
-    const r1 = requestAnimationFrame(() => {
-      reset();
-      const r2 = requestAnimationFrame(reset);
-      (reset as unknown as { _r2?: number })._r2 = r2;
-    });
-
-    return () => cancelAnimationFrame(r1);
+    return () => clearTimeout(timer);
   }, [pathname]);
 
   return null;

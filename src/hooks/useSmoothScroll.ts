@@ -9,12 +9,14 @@ const useSmoothScroll = () => {
       smoothWheel: true,
     });
 
+    let rafId: number;
+
     function raf(time: number) {
       lenis.raf(time);
-      requestAnimationFrame(raf);
+      rafId = requestAnimationFrame(raf);
     }
 
-    requestAnimationFrame(raf);
+    rafId = requestAnimationFrame(raf);
 
     // Support anchor links with smooth scroll
     const handleClick = (e: MouseEvent) => {
@@ -35,6 +37,7 @@ const useSmoothScroll = () => {
     document.addEventListener("click", handleClick);
 
     return () => {
+      cancelAnimationFrame(rafId);
       lenis.destroy();
       document.removeEventListener("click", handleClick);
     };

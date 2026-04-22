@@ -3,7 +3,7 @@ import { useRef, useState, useEffect, lazy, Suspense } from "react";
 import { Play, Volume2, VolumeX } from "lucide-react";
 import studioOnair from "@/assets/studio-onair.webp";
 import spaceMeeting from "@/assets/space-meeting.webp";
-import spaceFront from "@/assets/space-front.webp";
+import spaceFront from "@/assets/space-studio.jpg";
 import spaceCowork from "@/assets/space-coworking.jpg";
 import TextReveal from "./TextReveal";
 
@@ -199,7 +199,7 @@ const SpaceShowcase = () => {
               <div className="absolute inset-0 bg-gradient-to-t from-background/60 to-transparent" />
               <div className="absolute bottom-5 left-5">
                 <span className="inline-block px-3 py-1 bg-primary/20 backdrop-blur-sm text-primary text-xs font-heading font-medium rounded-full border border-primary/20">
-                  Coworking
+                  Espacio
                 </span>
               </div>
             </motion.div>
@@ -238,7 +238,7 @@ const SpaceShowcase = () => {
             >
               <motion.img
                 src={spaceFront}
-                alt="Fachada interior"
+                alt="Creators Studio"
                 className="w-full h-full object-cover"
                 loading="lazy"
                 decoding="async"
@@ -248,7 +248,7 @@ const SpaceShowcase = () => {
               <div className="absolute inset-0 bg-gradient-to-t from-background/70 via-transparent to-transparent" />
               <div className="absolute bottom-5 left-5">
                 <span className="inline-block px-3 py-1 bg-primary/20 backdrop-blur-sm text-primary text-xs font-heading font-medium rounded-full border border-primary/20">
-                  Conexiones
+                  Studio
                 </span>
               </div>
             </motion.div>

@@ -1,13 +1,17 @@
+import { lazy, Suspense } from "react";
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
-import SpaceShowcase from "@/components/SpaceShowcase";
-import EcosystemSection from "@/components/EcosystemSection";
-import ValueSection from "@/components/ValueSection";
-import BlogSection from "@/components/BlogSection";
-import ContactSection from "@/components/ContactSection";
-import FloatingChat from "@/components/FloatingChat";
-import FooterSection from "@/components/FooterSection";
 import useSmoothScroll from "@/hooks/useSmoothScroll";
+
+const SpaceShowcase = lazy(() => import("@/components/SpaceShowcase"));
+const EcosystemSection = lazy(() => import("@/components/EcosystemSection"));
+const ValueSection = lazy(() => import("@/components/ValueSection"));
+const BlogSection = lazy(() => import("@/components/BlogSection"));
+const ContactSection = lazy(() => import("@/components/ContactSection"));
+const FloatingChat = lazy(() => import("@/components/FloatingChat"));
+const FooterSection = lazy(() => import("@/components/FooterSection"));
+
+const SectionFallback = () => <div className="min-h-[40vh]" />;
 
 const Index = () => {
   useSmoothScroll();
@@ -16,15 +20,17 @@ const Index = () => {
     <div className="min-h-screen bg-background">
       <Navbar />
       <HeroSection />
-      <div id="espacio">
-        <SpaceShowcase />
-      </div>
-      <EcosystemSection />
-      <ValueSection />
-      <BlogSection />
-      <ContactSection />
-      <FooterSection />
-      <FloatingChat />
+      <Suspense fallback={<SectionFallback />}>
+        <div id="espacio">
+          <SpaceShowcase />
+        </div>
+        <EcosystemSection />
+        <ValueSection />
+        <BlogSection />
+        <ContactSection />
+        <FooterSection />
+        <FloatingChat />
+      </Suspense>
     </div>
   );
 };

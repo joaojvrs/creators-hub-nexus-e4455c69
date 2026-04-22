@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Heart, ThumbsUp, Star, Sparkles } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 type Reaction = {
   id: number;
@@ -24,12 +24,26 @@ const NUMBERS = ["+1", "+12", "+27", "+99", "+5", "+42", "+8"];
 
 const FloatingReactions = () => {
   const [reactions, setReactions] = useState<Reaction[]>([]);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
+    if (!containerRef.current) return;
+    const obs = new IntersectionObserver(
+      (entries) => setIsVisible(entries[0]?.isIntersecting ?? false),
+      { threshold: 0.05 }
+    );
+    obs.observe(containerRef.current);
+    return () => obs.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!isVisible) return;
     let id = 0;
     const types: Reaction["icon"][] = ["heart", "thumb", "star", "sparkle", "heart", "number", "heart"];
 
     const spawn = () => {
+      if (document.hidden) return;
       const icon = types[Math.floor(Math.random() * types.length)];
       const r: Reaction = {
         id: id++,
@@ -41,17 +55,16 @@ const FloatingReactions = () => {
         size: 18 + Math.random() * 16,
         drift: (Math.random() - 0.5) * 60,
       };
-      setReactions((prev) => [...prev.slice(-14), r]);
+      setReactions((prev) => [...prev.slice(-10), r]);
     };
 
-    // Initial burst
-    for (let i = 0; i < 4; i++) setTimeout(spawn, i * 300);
-    const interval = setInterval(spawn, 700);
+    for (let i = 0; i < 3; i++) setTimeout(spawn, i * 350);
+    const interval = setInterval(spawn, 900);
     return () => clearInterval(interval);
-  }, []);
+  }, [isVisible]);
 
   return (
-    <div className="absolute inset-0 pointer-events-none overflow-hidden z-20">
+    <div ref={containerRef} className="absolute inset-0 pointer-events-none overflow-hidden z-20">
       {reactions.map((r) => {
         const Icon = r.icon !== "number" ? ICONS[r.icon] : null;
         return (

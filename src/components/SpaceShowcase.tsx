@@ -4,7 +4,7 @@ import { Play, Volume2, VolumeX } from "lucide-react";
 import studioOnair from "@/assets/studio-onair.webp";
 import spaceMeeting from "@/assets/space-meeting.webp";
 import spaceFront from "@/assets/space-front.webp";
-import spaceCowork from "@/assets/space-cowork.webp";
+import spaceCowork from "@/assets/space-coworking.jpg";
 import TextReveal from "./TextReveal";
 
 const ReelsModal = lazy(() => import("./ReelsModal"));
